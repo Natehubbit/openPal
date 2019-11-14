@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity
     private ImageButton DeclineMessageRequestButton;
     private ImageButton SendMessageRequestButton;
     private TextView justText, justText2;
-    private LinearLayout declineMsgLay;
+    private LinearLayout declineMsgLay, sendMsgLay;
 
     private DatabaseReference UserRef, ChatRequestRef, ContactsRef, NotificationRef;
     private FirebaseAuth mAuth;
@@ -66,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity
         justText = findViewById(R.id.just_text);
         justText2 = findViewById(R.id.just_text_2);
         declineMsgLay = findViewById(R.id.decline_msg_lay);
+        sendMsgLay = findViewById(R.id.send_msg_lay);
         Current_State = "new";
 
 
@@ -219,6 +220,7 @@ public class ProfileActivity extends AppCompatActivity
         else
         {
             SendMessageRequestButton.setVisibility(View.INVISIBLE);
+            sendMsgLay.setVisibility(View.INVISIBLE);
         }
     }
 

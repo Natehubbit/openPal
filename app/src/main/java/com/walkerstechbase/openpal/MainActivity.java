@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -163,9 +164,36 @@ public class MainActivity extends AppCompatActivity
 
         if (item.getItemId() == R.id.main_logout_option)
         {
-            updateUserStatus("offline");
-            mAuth.signOut();
-            SendUserToLoginActivity();
+
+            final AlertDialog.Builder builder;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Logout?\n")
+                    .setMessage("Are you sure you want to logout of your account?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with logout
+                            try {
+                                updateUserStatus("offline");
+                                mAuth.signOut();
+                                SendUserToLoginActivity();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    //.setIcon(R.drawable.ic_bubble_chart_black_24dp)
+                    .show();
         }
         if (item.getItemId() == R.id.main_settings_option)
         {
