@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "113922223463",
+    "firebase_url": "https://openpal-1c7e8.firebaseio.com",
+    "project_id": "openpal-1c7e8",
+    "storage_bucket": "openpal-1c7e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113922223463:android:237c141766ba906a3353c2",
+        "android_client_info": {
+          "package_name": "com.walkerstechbase.openpal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113922223463-cm3jo4lae2jqme9i964bdcjbc44nftsp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.walkerstechbase.openpal",
+            "certificate_hash": "4b71f9abab06afed0b83ae5dd72fb9b866258ed5"
+          }
+        },
+        {
+          "client_id": "113922223463-npljtqhjpdaobaq389fol09fk0dllb93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrLJDd2qA_e15UP6Vk3Qnw5fHlSuDunBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113922223463-npljtqhjpdaobaq389fol09fk0dllb93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

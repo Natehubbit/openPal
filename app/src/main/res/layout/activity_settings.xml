@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity"
+    android:orientation="vertical">
+
+
+    <include
+        layout="@layout/app_bar_layout"
+        android:id="@+id/settings_toolbar"
+        >
+    </include>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/set_profile_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:src="@drawable/imgplaceholder"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/colorPrimary"/>
+
+    <EditText
+        android:id="@+id/set_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_profile_image"
+        android:inputType="textMultiLine"
+        android:hint="username"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/up_up"
+        android:layout_below="@+id/set_user_name"
+        android:orientation="horizontal"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:weightSum="2"
+        android:layout_marginTop="10dp">
+        <EditText
+            android:id="@+id/set_profile_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:hint="Hello, there!"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:background="@android:color/transparent"
+            android:layout_weight="1.9"/>
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_edit_black_24dp"
+            android:layout_weight="0.1"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/update_settings_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:text="Update"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold"
+        android:background="@drawable/bg_btn_rounded"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

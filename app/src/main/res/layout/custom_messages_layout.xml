@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/message_profile_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/imgplaceholder"
+
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/msg_cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_toEndOf="@+id/message_profile_image"
+        android:elevation="20dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/receiver_message_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="receiver messages here"
+                    android:padding="10dp"
+                    android:textColor="@android:color/black" />
+                <TextView
+                    android:id="@+id/receiver_text_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="receiver messages time"
+                    android:paddingBottom="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:textSize="11sp"
+                    android:layout_gravity="end"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/message_sender_image_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:scaleType="centerCrop"
+        />
+
+    <ImageView
+        android:id="@+id/message_receiver_image_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:scaleType="centerCrop"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/msg_cardView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="@+id/msg_cardView"
+        android:layout_marginEnd="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#80515EA5">
+            <TextView
+                android:id="@+id/sender_messsage_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sender messages"
+                android:textSize="14sp"
+                android:padding="10dp"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:id="@+id/sender_text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sender messages time"
+                android:paddingBottom="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textSize="11sp"
+                android:layout_gravity="end"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
