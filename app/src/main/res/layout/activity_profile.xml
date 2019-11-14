@@ -37,7 +37,7 @@
         android:id="@+id/visit_profile_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="hey i'm using Coding Cafe chat App."
+        android:text="Hey, i'm using OpenPal."
         android:layout_below="@+id/visit_user_name"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -49,38 +49,111 @@
         />
 
 
-    <Button
-        android:id="@+id/send_message_request_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/visit_profile_status"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="65dp"
-        android:layout_marginRight="65dp"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorPrimaryDark"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="Send Message"
-        android:textAllCaps="false"
-        />
 
 
-    <Button
-        android:id="@+id/decline_message_request_button"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/send_message_request_button"
-        android:layout_marginTop="6dp"
-        android:layout_marginLeft="65dp"
-        android:layout_marginRight="65dp"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorPrimaryDark"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="Cancel Chat Request"
-        android:textAllCaps="false"
-        android:visibility="invisible"
-        />
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true">
+        <!--    <Button-->
+        <!--        android:id="@+id/send_message_request_button"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_below="@+id/visit_profile_status"-->
+        <!--        android:layout_marginTop="15dp"-->
+        <!--        android:layout_marginLeft="65dp"-->
+        <!--        android:layout_marginRight="65dp"-->
+        <!--        android:textColor="@android:color/background_light"-->
+        <!--        android:background="@color/colorPrimaryDark"-->
+        <!--        android:textStyle="bold"-->
+        <!--        android:textSize="20sp"-->
+        <!--        android:text="Send Message"-->
+        <!--        android:textAllCaps="false"-->
+        <!--        />-->
+        <LinearLayout
+            android:id="@+id/send_msg_lay"
+            android:layout_below="@+id/visit_profile_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/just_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send A Message"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:padding="10dp"/>
+            <ImageButton
+                android:id="@+id/send_message_request_button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_paper_plane"
+                android:paddingEnd="10dp"
+                android:paddingStart="0dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:elevation="20dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+        </LinearLayout>
+
+
+        <!--    <Button-->
+        <!--        android:id="@+id/decline_message_request_button"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_below="@+id/send_msg_lay"-->
+        <!--        android:layout_marginTop="6dp"-->
+        <!--        android:layout_marginLeft="65dp"-->
+        <!--        android:layout_marginRight="65dp"-->
+        <!--        android:textColor="@android:color/background_light"-->
+        <!--        android:background="@color/colorPrimaryDark"-->
+        <!--        android:textStyle="bold"-->
+        <!--        android:textSize="20sp"-->
+        <!--        android:text="Cancel Chat Request"-->
+        <!--        android:textAllCaps="false"-->
+        <!--        android:visibility="invisible"-->
+        <!--        />-->
+        <LinearLayout
+            android:id="@+id/decline_msg_lay"
+            android:layout_below="@+id/send_msg_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/just_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Decline Chat Request"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:padding="10dp"/>
+            <ImageButton
+                android:id="@+id/decline_message_request_button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_negative_vote"
+                android:backgroundTint="@color/colorAccent"
+                android:paddingEnd="10dp"
+                android:paddingStart="0dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:elevation="20dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

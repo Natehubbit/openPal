@@ -1,8 +1,11 @@
 package com.walkerstechbase.openpal;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,7 +31,10 @@ public class ProfileActivity extends AppCompatActivity
 
     private CircleImageView userProfileImage;
     private TextView userProfileName, userProfileStatus;
-    private Button SendMessageRequestButton, DeclineMessageRequestButton;
+    private ImageButton DeclineMessageRequestButton;
+    private ImageButton SendMessageRequestButton;
+    private TextView justText, justText2;
+    private LinearLayout declineMsgLay;
 
     private DatabaseReference UserRef, ChatRequestRef, ContactsRef, NotificationRef;
     private FirebaseAuth mAuth;
@@ -55,8 +61,11 @@ public class ProfileActivity extends AppCompatActivity
         userProfileImage = (CircleImageView) findViewById(R.id.visit_profile_image);
         userProfileName = (TextView) findViewById(R.id.visit_user_name);
         userProfileStatus = (TextView) findViewById(R.id.visit_profile_status);
-        SendMessageRequestButton = (Button) findViewById(R.id.send_message_request_button);
-        DeclineMessageRequestButton = (Button) findViewById(R.id.decline_message_request_button);
+        SendMessageRequestButton = findViewById(R.id.send_message_request_button);
+        DeclineMessageRequestButton = findViewById(R.id.decline_message_request_button);
+        justText = findViewById(R.id.just_text);
+        justText2 = findViewById(R.id.just_text_2);
+        declineMsgLay = findViewById(R.id.decline_msg_lay);
         Current_State = "new";
 
 
@@ -122,14 +131,20 @@ public class ProfileActivity extends AppCompatActivity
                             if (request_type.equals("sent"))
                             {
                                 Current_State = "request_sent";
-                                SendMessageRequestButton.setText("Cancel Chat Request");
+//                                SendMessageRequestButton.setText("Cancel Chat Request");
+                                justText.setText("Cancel Chat Request");
+                                SendMessageRequestButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp));
                             }
                             else if (request_type.equals("received"))
                             {
                                 Current_State = "request_received";
-                                SendMessageRequestButton.setText("Accept Chat Request");
+//                                SendMessageRequestButton.setText("Accept Chat Request");
+                                justText.setText("Accept Chat Request");
+                                SendMessageRequestButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_positive_vote));
 
-                                DeclineMessageRequestButton.setVisibility(View.VISIBLE);
+
+                                //DeclineMessageRequestButton.setVisibility(View.VISIBLE);
+                                declineMsgLay.setVisibility(View.VISIBLE);
                                 DeclineMessageRequestButton.setEnabled(true);
 
                                 DeclineMessageRequestButton.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +166,10 @@ public class ProfileActivity extends AppCompatActivity
                                             if (dataSnapshot.hasChild(receiverUserID))
                                             {
                                                 Current_State = "friends";
-                                                SendMessageRequestButton.setText("Remove this Contact");
+//                                                SendMessageRequestButton.setText("Remove this Contact");
+                                                justText.setText("Remove Contact");
+                                                SendMessageRequestButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp));
+
                                             }
                                         }
 
@@ -226,9 +244,12 @@ public class ProfileActivity extends AppCompatActivity
                                             {
                                                 SendMessageRequestButton.setEnabled(true);
                                                 Current_State = "new";
-                                                SendMessageRequestButton.setText("Send Message");
+//                                                SendMessageRequestButton.setText("Send Message");
+                                                justText.setText("Send A Message");
+                                                SendMessageRequestButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_paper_plane));
 
-                                                DeclineMessageRequestButton.setVisibility(View.INVISIBLE);
+
+                                                DeclineMessageRequestButton.setVisibility(View.GONE);
                                                 DeclineMessageRequestButton.setEnabled(false);
                                             }
                                         }
@@ -274,9 +295,12 @@ public class ProfileActivity extends AppCompatActivity
                                                                                 {
                                                                                     SendMessageRequestButton.setEnabled(true);
                                                                                     Current_State = "friends";
-                                                                                    SendMessageRequestButton.setText("Remove this Contact");
+//                                                                                    SendMessageRequestButton.setText("Remove this Contact");
+                                                                                    justText.setText("Remove Contact");
+                                                                                    SendMessageRequestButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp));
 
-                                                                                    DeclineMessageRequestButton.setVisibility(View.INVISIBLE);
+
+                                                                                    DeclineMessageRequestButton.setVisibility(View.GONE);
                                                                                     DeclineMessageRequestButton.setEnabled(false);
                                                                                 }
                                                                             });
@@ -314,9 +338,12 @@ public class ProfileActivity extends AppCompatActivity
                                             {
                                                 SendMessageRequestButton.setEnabled(true);
                                                 Current_State = "new";
-                                                SendMessageRequestButton.setText("Send Message");
+//                                                SendMessageRequestButton.setText("Send Message");
+                                                justText.setText("Send A Message");
+                                                SendMessageRequestButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_paper_plane));
 
-                                                DeclineMessageRequestButton.setVisibility(View.INVISIBLE);
+
+                                                DeclineMessageRequestButton.setVisibility(View.GONE);
                                                 DeclineMessageRequestButton.setEnabled(false);
                                             }
                                         }
@@ -361,7 +388,10 @@ public class ProfileActivity extends AppCompatActivity
                                                                 {
                                                                     SendMessageRequestButton.setEnabled(true);
                                                                     Current_State = "request_sent";
-                                                                    SendMessageRequestButton.setText("Cancel Chat Request");
+//                                                                    SendMessageRequestButton.setText("Cancel Chat Request");
+                                                                    justText.setText("Cancel Chat Request");
+                                                                    SendMessageRequestButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp));
+
                                                                 }
                                                             }
                                                         });

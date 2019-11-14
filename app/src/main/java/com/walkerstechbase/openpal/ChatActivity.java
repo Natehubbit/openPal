@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -100,10 +101,10 @@ public class ChatActivity extends AppCompatActivity {
     private void IntializeControllers()
     {
         ChatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
-        //setSupportActionBar(ChatToolBar);
+        setSupportActionBar(ChatToolBar);
 //
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
+        //ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        actionBar.setDisplayShowCustomEnabled(true);
 
 //        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
