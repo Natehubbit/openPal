@@ -114,7 +114,7 @@ public class ChatActivity extends AppCompatActivity {
 
         DisplayLastSeen();
 
-
+        RootRef.keepSynced(true);
         RootRef.child("Messages").child(messageSenderID).child(messageReceiverID)
                 .addChildEventListener(new ChildEventListener() {
                     @Override

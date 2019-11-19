@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -56,6 +58,8 @@ public class ChatsFragment extends Fragment
         ChatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        ChatsRef.keepSynced(true);
+        UsersRef.keepSynced(true);
 
         chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -94,7 +98,18 @@ public class ChatsFragment extends Fragment
                                     if (dataSnapshot.hasChild("image"))
                                     {
                                         retImage[0] = dataSnapshot.child("image").getValue().toString();
-                                        Picasso.get().load(retImage[0]).into(holder.profileImage);
+                                        Picasso.get().load(retImage[0]).networkPolicy(NetworkPolicy.OFFLINE)
+                                                .into(holder.profileImage, new Callback() {
+                                                    @Override
+                                                    public void onSuccess() {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Exception e) {
+                                                        Picasso.get().load(retImage[0]).into(holder.profileImage);
+                                                    }
+                                                });
                                     }
 
                                     final String retName = dataSnapshot.child("name").getValue().toString();

@@ -8,6 +8,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,8 +41,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity
 {
-    private Button UpdateAccountSettings;
+    private ImageButton UpdateAccountSettings;
     private EditText userName, userStatus;
+    LinearLayout up ;
+    ImageView icon100;
     private CircleImageView userProfileImage;
 
     private String currentUserID;
@@ -70,6 +75,9 @@ public class SettingsActivity extends AppCompatActivity
 
 
         userName.setVisibility(View.INVISIBLE);
+        up.setVisibility(View.INVISIBLE);
+        icon100.setVisibility(View.INVISIBLE);
+
 
 
         UpdateAccountSettings.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +108,10 @@ public class SettingsActivity extends AppCompatActivity
 
     private void InitializeFields()
     {
-        UpdateAccountSettings = (Button) findViewById(R.id.update_settings_button);
+        UpdateAccountSettings = findViewById(R.id.update_settings_button);
         userName = (EditText) findViewById(R.id.set_user_name);
+        icon100 = findViewById(R.id.icon100);
+        up = findViewById(R.id.upp);
         userStatus = (EditText) findViewById(R.id.set_profile_status);
         userProfileImage = (CircleImageView) findViewById(R.id.set_profile_image);
         loadingBar = new ProgressDialog(this);
@@ -271,6 +281,8 @@ public class SettingsActivity extends AppCompatActivity
                         else
                         {
                             userName.setVisibility(View.VISIBLE);
+                            up.setVisibility(View.VISIBLE);
+                            icon100.setVisibility(View.VISIBLE);
                             Toast.makeText(SettingsActivity.this, "Please set & update your profile information...", Toast.LENGTH_SHORT).show();
                         }
                     }

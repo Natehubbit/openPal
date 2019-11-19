@@ -23,12 +23,13 @@
         android:layout_marginTop="90dp"
         android:src="@drawable/imgplaceholder"
         app:civ_border_width="5dp"
-        app:civ_border_color="@color/colorPrimary"/>
+        app:civ_border_color="@color/colorPrimary"
+        android:layout_marginBottom="70dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/up"
+        android:id="@+id/upp"
         android:layout_below="@+id/set_profile_image"
         android:orientation="horizontal"
         android:layout_marginStart="35dp"
@@ -49,6 +50,7 @@
         android:background="@android:color/transparent"
         android:layout_weight="1.9"/>
         <ImageButton
+            android:id="@+id/icon100"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_edit_black_24dp"
@@ -59,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/up_up"
-        android:layout_below="@+id/up"
+        android:layout_below="@+id/upp"
         android:orientation="horizontal"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
@@ -72,12 +74,11 @@
             android:inputType="textMultiLine"
             android:hint="Hello, there!"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
             android:padding="6dp"
             android:background="@android:color/transparent"
             android:layout_weight="1.9"/>
         <ImageButton
+            android:id="@+id/icon101"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_edit_black_24dp"
@@ -85,23 +86,49 @@
             android:background="@android:color/transparent"/>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/update_settings_button"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:text="Update"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textStyle="bold"
-        android:background="@drawable/bg_btn_rounded"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
-        android:padding="6dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="40dp"
-        android:textAllCaps="false"
-        android:textSize="20sp"
-        android:layout_alignParentBottom="true"/>
+        android:orientation="horizontal"
+        android:layout_gravity="end"
+        android:padding="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:padding="10dp" />
+        <ImageButton
+            android:id="@+id/update_settings_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_rounded"
+            android:src="@drawable/ic_arrowrightsvg"
+            android:padding="20dp"
+            android:elevation="20dp"/>
+    </LinearLayout>
+
+<!--    <Button-->
+<!--        android:id="@+id/update_settings_button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:inputType="textMultiLine"-->
+<!--        android:text="Update"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="@android:color/background_light"-->
+<!--        android:textStyle="bold"-->
+<!--        android:background="@drawable/bg_btn_rounded"-->
+<!--        android:layout_marginStart="35dp"-->
+<!--        android:layout_marginEnd="35dp"-->
+<!--        android:padding="6dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginBottom="40dp"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textSize="20sp"-->
+<!--        android:layout_alignParentBottom="true"/>-->
 
 </RelativeLayout>
