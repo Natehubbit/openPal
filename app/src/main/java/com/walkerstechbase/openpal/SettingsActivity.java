@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -143,47 +145,56 @@ public class SettingsActivity extends AppCompatActivity
                 Uri resultUri = result.getUri();
 
 
-                StorageReference filePath = UserProfileImagesRef.child(currentUserID + ".jpg");
+                final StorageReference filePath = UserProfileImagesRef.child(currentUserID + ".jpg");
 
-                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+
+                filePath.putFile(resultUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(SettingsActivity.this, "Profile Image uploaded Successfully...", Toast.LENGTH_SHORT).show();
+
+                                filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        String downloaedUrl = uri.toString();
+
+                                        RootRef.child("Users").child(currentUserID).child("image")
+                                                .setValue(downloaedUrl)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task)
+                                                    {
+                                                        if (task.isSuccessful())
+                                                        {
+                                                            Toast.makeText(SettingsActivity.this, "Image save in Database, Successfully...", Toast.LENGTH_SHORT).show();
+                                                            loadingBar.dismiss();
+                                                        }
+                                                        else
+                                                        {
+                                                            String message = task.getException().toString();
+                                                            Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                                            loadingBar.dismiss();
+                                                        }
+                                                    }
+                                                });
+
+                                    }
+                                });
+                                //final String downloaedUrl = task.getResult().getDownloadUrl().toString();
+                                //final String downloaedUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                                //final String downloaedUrl = taskSnapshot.getUploadSessionUri().toString();
+
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
-                    {
-                        if (task.isSuccessful())
-                        {
-                            Toast.makeText(SettingsActivity.this, "Profile Image uploaded Successfully...", Toast.LENGTH_SHORT).show();
-
-                            //final String downloaedUrl = task.getResult().getDownloadUrl().toString();
-                            final String downloaedUrl = task.getResult().toString();
-
-                            RootRef.child("Users").child(currentUserID).child("image")
-                                    .setValue(downloaedUrl)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task)
-                                        {
-                                            if (task.isSuccessful())
-                                            {
-                                                Toast.makeText(SettingsActivity.this, "Image save in Database, Successfully...", Toast.LENGTH_SHORT).show();
-                                                loadingBar.dismiss();
-                                            }
-                                            else
-                                            {
-                                                String message = task.getException().toString();
-                                                Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
-                                                loadingBar.dismiss();
-                                            }
-                                        }
-                                    });
-                        }
-                        else
-                        {
-                            String message = task.getException().toString();
-                            Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                    public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SettingsActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             loadingBar.dismiss();
-                        }
                     }
                 });
+
             }
         }
     }

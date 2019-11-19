@@ -49,7 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public TextView senderMessageText,senderMessageTime, receiverMessageText, receiverMessageTime;
         public CircleImageView receiverProfileImage;
         public ImageView messageSenderPicture, messageReceiverPicture;
-
+        RecyclerView recyclerView;
 
         public MessageViewHolder(@NonNull View itemView)
         {
@@ -62,6 +62,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             receiverMessageText = itemView.findViewById(R.id.receiver_message_text);
             receiverMessageTime = itemView.findViewById(R.id.receiver_text_time);
             senderMessageTime = itemView.findViewById(R.id.sender_text_time);
+            recyclerView = itemView.findViewById(R.id.private_messages_list_of_users);
         }
     }
 
@@ -307,7 +308,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (i == 0){
                                     deleteReceivedMessages(position, messageViewHolder);
-
                                 }
                                 else if (i == 1){
                                     //do nothing

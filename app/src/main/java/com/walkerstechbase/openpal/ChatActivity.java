@@ -76,6 +76,7 @@ public class ChatActivity extends AppCompatActivity {
     private Uri fileUri;
     private ProgressDialog loadingBar;
 
+    Messages messages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -119,7 +120,7 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s)
                     {
-                        Messages messages = dataSnapshot.getValue(Messages.class);
+                        messages = dataSnapshot.getValue(Messages.class);
 
                         messagesList.add(messages);
 
@@ -135,6 +136,9 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        messageAdapter.notifyDataSetChanged();
+                        finish();
+                        startActivity(getIntent());
 
                     }
 
@@ -514,4 +518,5 @@ public class ChatActivity extends AppCompatActivity {
             });
         }
     }
+
 }
