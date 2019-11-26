@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -83,11 +85,22 @@ public class ProfileActivity extends AppCompatActivity
             {
                 if ((dataSnapshot.exists())  &&  (dataSnapshot.hasChild("image")))
                 {
-                    String userImage = dataSnapshot.child("image").getValue().toString();
+                    final String userImage = dataSnapshot.child("image").getValue().toString();
                     String userName = dataSnapshot.child("name").getValue().toString();
                     String userstatus = dataSnapshot.child("status").getValue().toString();
 
-                    Picasso.get().load(userImage).placeholder(R.drawable.ic_launcher_background).into(userProfileImage);
+                    //TODO change the placeholder for this
+                    Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_launcher_background).into(userProfileImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(userImage).into(userProfileImage);
+                        }
+                    });
                     userProfileName.setText(userName);
                     userProfileStatus.setText(userstatus);
 

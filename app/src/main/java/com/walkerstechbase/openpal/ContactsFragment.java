@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -114,13 +116,24 @@ public class ContactsFragment extends Fragment
 
                             if (dataSnapshot.hasChild("image"))
                             {
-                                String userImage = dataSnapshot.child("image").getValue().toString();
+                                final String userImage = dataSnapshot.child("image").getValue().toString();
                                 String profileName = dataSnapshot.child("name").getValue().toString();
                                 String profileStatus = dataSnapshot.child("status").getValue().toString();
 
                                 holder.userName.setText(profileName);
                                 holder.userStatus.setText(profileStatus);
-                                Picasso.get().load(userImage).placeholder(R.drawable.ic_fiber_smart_record_black_24dp).into(holder.profileImage);
+                                Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_fiber_smart_record_black_24dp).into(holder.profileImage, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Picasso.get().load(userImage).into(holder.profileImage);
+
+                                    }
+                                });
                             }
                             else
                             {

@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -87,7 +89,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, final int position)
     {
         String messageSenderId = mAuth.getCurrentUser().getUid();
-        Messages messages = userMessagesList.get(position);
+        final Messages messages = userMessagesList.get(position);
 
         String fromUserID = messages.getFrom();
         String fromMessageType = messages.getType();
@@ -100,9 +102,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             {
                 if (dataSnapshot.hasChild("image"))
                 {
-                    String receiverImage = dataSnapshot.child("image").getValue().toString();
+                    final String receiverImage = dataSnapshot.child("image").getValue().toString();
 
-                    Picasso.get().load(receiverImage).placeholder(R.drawable.ic_launcher_background).into(messageViewHolder.receiverProfileImage);
+                    //TODO change the placeholder for this imageview
+                    Picasso.get().load(receiverImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_launcher_background).into(messageViewHolder.receiverProfileImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(receiverImage).into(messageViewHolder.receiverProfileImage);
+
+                        }
+                    });
                 }
             }
 
@@ -155,12 +169,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if (fromUserID.equals(messageSenderId)){
                 messageViewHolder.messageSenderPicture.setVisibility(View.VISIBLE);
 
-                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageSenderPicture);
+                //TODO change the placeholder for this imageview
+                Picasso.get().load(messages.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).into(messageViewHolder.messageSenderPicture, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageSenderPicture);
+                    }
+                });
             }else {
                 messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
                 messageViewHolder.messageReceiverPicture.setVisibility(View.VISIBLE);
 
-                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageReceiverPicture);
+                Picasso.get().load(messages.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).into(messageViewHolder.messageReceiverPicture, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageReceiverPicture);
+                    }
+                });
             }
         }
         else if (fromMessageType.equals("pdf") || fromMessageType.equals("docx")){
