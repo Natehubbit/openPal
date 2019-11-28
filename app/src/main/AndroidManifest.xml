@@ -8,14 +8,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".OpenPal"
         android:allowBackup="true"
         android:icon="@drawable/logopen"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logopen"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".OpenPal">
-        <activity android:name=".ImageVIewActivity"></activity>
+        android:theme="@style/AppTheme">
+        <activity android:name=".FindUser2"></activity>
+        <activity android:name=".ImageVIewActivity" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +42,7 @@
             android:name=".ChatActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".VerifyPhone" />
+        <activity android:name=".ChatActivity2" />
     </application>
 
 </manifest>
