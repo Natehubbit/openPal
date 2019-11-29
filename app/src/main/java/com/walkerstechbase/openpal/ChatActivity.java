@@ -99,7 +99,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         //userName.setText(messageReceiverName);
-        ChatToolBar.setTitle(messageReceiverName);
+
         //Picasso.get().load(messageReceiverImage).into(userImage);
 
 
@@ -207,7 +207,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private void IntializeControllers()
     {
+
         ChatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
+        ChatToolBar.setTitle(messageReceiverName);
         setSupportActionBar(ChatToolBar);
 //
         //ActionBar actionBar = getSupportActionBar();

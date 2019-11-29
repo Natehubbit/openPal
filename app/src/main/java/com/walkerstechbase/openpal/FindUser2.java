@@ -202,8 +202,8 @@ public class FindUser2 extends AppCompatActivity  {
                     for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
 //                        if(childSnapshot.child("phone").getValue()!=null)
 //                            phone = childSnapshot.child("phone").getValue().toString();
-                        if(childSnapshot.child("name").getValue()!=null)
-                            name = childSnapshot.child("name").getValue().toString();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if(childSnapshot.child("name").getValue()!=null)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                name = childSnapshot.child("name").getValue().toString();
 
 
                         UserObject2 mUser = new UserObject2(childSnapshot.getKey(), name, phone);

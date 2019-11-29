@@ -15,7 +15,10 @@
         android:roundIcon="@drawable/logopen"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FindUser2"></activity>
+        <activity android:name=".JobPostings"></activity>
+        <activity android:name=".PostAJobActivity" />
+        <activity android:name=".CounsellingActivity" />
+        <activity android:name=".FindUser2" />
         <activity android:name=".ImageVIewActivity" />
         <activity android:name=".SplashScreen">
             <intent-filter>

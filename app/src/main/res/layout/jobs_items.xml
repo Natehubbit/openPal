@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:weightSum="2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1.5">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="posted by"
+            android:textStyle="italic"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="5dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/job_item_image"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:src="@drawable/imgplaceholder"/>
+        <TextView
+            android:id="@+id/job_item_postedBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="posted by"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:layout_marginTop="5dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="0.5">
+        <TextView
+            android:id="@+id/job_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="title"
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:id="@+id/job_item_content"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:text="Content"
+            android:textSize="15sp"
+            android:maxLines="4"
+            android:ellipsize="end"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/job_item_timestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="timestamp"
+            android:gravity="end"
+            android:maxLines="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>

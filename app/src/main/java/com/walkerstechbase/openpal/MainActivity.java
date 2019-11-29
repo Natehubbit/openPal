@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             {
                 if ((dataSnapshot.child("name").exists()))
                 {
-                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -207,6 +207,12 @@ public class MainActivity extends AppCompatActivity
         if (item.getItemId() == R.id.main_find_friends_option)
         {
             SendUserToFindFriendsActivity();
+        }
+        if(item.getItemId() == R.id.main_counselling_session){
+            SendUserToCounsellingActivity();
+        }
+        if (item.getItemId() == R.id.main_job_postings){
+            startActivity(new Intent(MainActivity.this, JobPostings.class));
         }
 
         return true;
@@ -291,6 +297,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private void SendUserToCounsellingActivity(){
+        Intent intent = new Intent(MainActivity.this, CounsellingActivity.class);
+        startActivity(intent);
+    }
 
     private void updateUserStatus(String state)
     {
