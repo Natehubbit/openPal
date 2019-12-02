@@ -26,39 +26,48 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="50dp"/>
 
-        <RelativeLayout
+        <ImageView
             android:layout_width="190dp"
             android:layout_height="190dp"
+            android:src="@drawable/logopen"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/imgplaceholder"
-                android:scaleType="centerCrop"
-                app:strokeColor="@color/colorAccent"
-                app:strokeWidth="1dp"/>
+            android:layout_marginBottom="10dp"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageButton
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_add_a_photo_black_24dp"
-                    android:background="@android:color/transparent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/pic_lay"-->
+<!--            android:layout_width="190dp"-->
+<!--            android:layout_height="190dp"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginBottom="10dp">-->
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:src="@drawable/imgplaceholder"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                app:strokeColor="@color/colorAccent"-->
+<!--                app:strokeWidth="1dp"/>-->
 
-        </RelativeLayout>
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--                <ImageButton-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:src="@drawable/ic_add_a_photo_black_24dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:layout_alignParentBottom="true"-->
+<!--                    android:layout_alignParentEnd="true"/>-->
+<!--            </RelativeLayout>-->
+
+<!--        </RelativeLayout>-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Photo"
             android:layout_marginBottom="50dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:layout_width="match_parent"

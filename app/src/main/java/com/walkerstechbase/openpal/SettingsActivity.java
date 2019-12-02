@@ -46,7 +46,7 @@ public class SettingsActivity extends AppCompatActivity
     private ImageButton UpdateAccountSettings;
     private EditText userName, userStatus;
     LinearLayout up ;
-    ImageView icon100;
+    ImageButton icon100;
     private CircleImageView userProfileImage;
 
     private String currentUserID;

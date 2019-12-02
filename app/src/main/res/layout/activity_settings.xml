@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:nestedScrollingEnabled="true">
 
 
     <include
@@ -14,17 +15,49 @@
         >
     </include>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+<!--    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--        android:id="@+id/set_profile_image"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="300dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="90dp"-->
+<!--        android:src="@drawable/imgplaceholder"-->
+<!--        app:civ_border_width="5dp"-->
+<!--        app:civ_border_color="@color/colorPrimary"-->
+<!--        android:layout_marginBottom="70dp"/>-->
+
+
+    <RelativeLayout
         android:id="@+id/set_profile_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
-        android:src="@drawable/imgplaceholder"
-        app:civ_border_width="5dp"
-        app:civ_border_color="@color/colorPrimary"
-        android:layout_marginBottom="70dp"/>
+        android:layout_marginTop="90dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/imgplaceholder"
+            android:scaleType="centerCrop"
+            app:strokeColor="@color/colorAccent"
+            app:strokeWidth="1dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_add_a_photo_black_24dp"
+                android:background="@android:color/transparent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
