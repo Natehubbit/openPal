@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class GroupChatActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private DatabaseReference UsersRef, GroupNameRef, GroupMessageKeyRef;
 
-    private String currentGroupName,  currentUserName, currentDate, currentTime;
+    private String currentGroupName,  currentUserName, currentDate, currentTime, currentUserImage;
     String currentUserID;
     String saveCurrentTime, saveCurrentDate;
     //String messageSenderID;
@@ -103,6 +105,9 @@ public class GroupChatActivity extends AppCompatActivity
             {
                 if (dataSnapshot.exists())
                 {
+                    //load image
+//                    Picasso.get().load(currentUserImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into();
+
                     // DisplayMessages(dataSnapshot);
 
                     messages = dataSnapshot.getValue(Messages.class);
@@ -120,7 +125,15 @@ public class GroupChatActivity extends AppCompatActivity
             {
                 if (dataSnapshot.exists())
                 {
-                    DisplayMessages(dataSnapshot);
+//                    DisplayMessages(dataSnapshot);
+
+                    messages = dataSnapshot.getValue(Messages.class);
+
+                    messagesList.add(messages);
+
+                    messageAdapter.notifyDataSetChanged();
+
+                    groupMessagesList.smoothScrollToPosition(groupMessagesList.getAdapter().getItemCount());
                 }
             }
 
@@ -242,6 +255,7 @@ public class GroupChatActivity extends AppCompatActivity
             messageTextBody.put("from", currentUserID);
             messageTextBody.put("fromName", currentUserName);
             messageTextBody.put("to", currentGroupName);
+            messageTextBody.put("fromImage", currentUserImage);
             messageTextBody.put("messageID", messagePushID);
             messageTextBody.put("time", saveCurrentTime);
             messageTextBody.put("date", saveCurrentDate);
@@ -350,6 +364,7 @@ public class GroupChatActivity extends AppCompatActivity
                 if (dataSnapshot.exists())
                 {
                     currentUserName = dataSnapshot.child("name").getValue().toString();
+                    currentUserImage = dataSnapshot.child("image").getValue().toString();
                 }
             }
 

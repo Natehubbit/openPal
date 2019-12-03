@@ -2,16 +2,17 @@ package com.walkerstechbase.openpal;
 
 public class Messages
 {
-    private String from, fromName, message, type, to, messageID, time, date, name;
+    private String from, fromName, fromImage, message, type, to, messageID, time, date, name;
 
     public Messages()
     {
 
     }
 
-    public Messages(String from, String fromName, String message, String type, String to, String messageID, String time, String date, String name) {
+    public Messages(String from, String fromName, String fromImage, String message, String type, String to, String messageID, String time, String date, String name) {
         this.from = from;
         this.fromName = fromName;
+        this.fromImage = fromImage;
         this.message = message;
         this.type = type;
         this.to = to;
@@ -36,6 +37,15 @@ public class Messages
     public void setFromName(String fromName) {
         this.fromName = fromName;
     }
+
+    public String getFromImage() {
+        return fromImage;
+    }
+
+    public void setFromImage(String fromImage) {
+        this.fromImage = fromImage;
+    }
+
     public String getMessage() {
         return message;
     }
