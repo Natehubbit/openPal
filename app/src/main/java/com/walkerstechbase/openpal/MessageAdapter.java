@@ -36,7 +36,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 {
     private List<Messages> userMessagesList;
     private FirebaseAuth mAuth;
-    private DatabaseReference usersRef;
+    //private DatabaseReference usersRef;
 
 
     public MessageAdapter (List<Messages> userMessagesList)
@@ -48,7 +48,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView senderMessageText,senderMessageTime, receiverMessageText, receiverMessageTime;
+        public TextView senderMessageText,senderMessageTime, receiverMessageText, receiverMessageTime, receiverName;
         public CircleImageView receiverProfileImage;
         public ImageView messageSenderPicture, messageReceiverPicture;
         RecyclerView recyclerView;
@@ -65,6 +65,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             receiverMessageTime = itemView.findViewById(R.id.receiver_text_time);
             senderMessageTime = itemView.findViewById(R.id.sender_text_time);
             recyclerView = itemView.findViewById(R.id.private_messages_list_of_users);
+            receiverName = itemView.findViewById(R.id.receiver_name);
         }
     }
 
@@ -94,42 +95,42 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         String fromUserID = messages.getFrom();
         String fromMessageType = messages.getType();
 
-        usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(fromUserID);
-
-        usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (dataSnapshot.hasChild("image"))
-                {
-                    final String receiverImage = dataSnapshot.child("image").getValue().toString();
-
-                    //TODO change the placeholder for this imageview
-                    Picasso.get().load(receiverImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_launcher_background).into(messageViewHolder.receiverProfileImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().load(receiverImage).into(messageViewHolder.receiverProfileImage);
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+//        usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(fromUserID);
+//
+//        usersRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot)
+//            {
+//                if (dataSnapshot.hasChild("image"))
+//                {
+//                    final String receiverImage = dataSnapshot.child("image").getValue().toString();
+//
+//                    //TODO change the placeholder for this imageview
+//                    Picasso.get().load(receiverImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_launcher_background).into(messageViewHolder.receiverProfileImage, new Callback() {
+//                        @Override
+//                        public void onSuccess() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Exception e) {
+//                            Picasso.get().load(receiverImage).into(messageViewHolder.receiverProfileImage);
+//
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
 
+
+        messageViewHolder.receiverName.setVisibility(View.GONE);
         messageViewHolder.receiverMessageText.setVisibility(View.GONE);
         messageViewHolder.receiverMessageTime.setVisibility(View.GONE);
         messageViewHolder.receiverProfileImage.setVisibility(View.GONE);
@@ -156,12 +157,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             {
                 messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
                 messageViewHolder.receiverMessageText.setVisibility(View.VISIBLE);
+                messageViewHolder.receiverName.setVisibility(View.VISIBLE);
                 messageViewHolder.receiverMessageTime.setVisibility(View.VISIBLE);
 
 //                messageViewHolder.receiverMessageText.setBackgroundResource(R.drawable.ic_attach_file_black_24dp);
                 messageViewHolder.receiverMessageText.setTextColor(Color.BLACK);
+                messageViewHolder.receiverName.setTextColor(Color.BLACK);
                 messageViewHolder.receiverMessageTime.setTextColor(Color.BLACK);
                 messageViewHolder.receiverMessageText.setText(messages.getMessage());
+                messageViewHolder.receiverName.setText(messages.getFromName());
                 messageViewHolder.receiverMessageTime.setText(messages.getTime() + " - " + messages.getDate());
             }
         }

@@ -201,8 +201,8 @@ public class MainActivity extends AppCompatActivity
         }
         if (item.getItemId() == R.id.main_create_group_option)
         {
-            startActivity(new Intent(MainActivity.this, FindUser2.class));
-         //   RequestNewGroup();
+            //startActivity(new Intent(MainActivity.this, FindUser2.class));
+            RequestNewGroup();
         }
         if (item.getItemId() == R.id.main_find_friends_option)
         {

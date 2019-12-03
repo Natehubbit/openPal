@@ -107,9 +107,14 @@ public class FindUser2 extends AppCompatActivity  {
                         holder.mName.setText(model.getName());
                         holder.mAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                Toast.makeText(buttonView.getContext(), "you checked " + userList.get(holder.getAdapterPosition()).getName(), Toast.LENGTH_SHORT).show();
-                                userList.get(holder.getAdapterPosition()).setSelected(isChecked);
+                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                Toast.makeText(compoundButton.getContext(), "you checked " + model.getName() , Toast.LENGTH_SHORT).show();
+//                                userList.get(holder.getAdapterPosition()).setSelected(isChecked);
+                                //holder.mAdd.setSelected(true);
+
+                                int id = compoundButton.getId();
+
+                                Toast.makeText(FindUser2.this, "jules "+ model.getName(), Toast.LENGTH_SHORT).show();
                             }
                         });
 

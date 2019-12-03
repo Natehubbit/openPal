@@ -29,7 +29,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/set_profile_image"
+        android:id="@+id/set_profile_image1"
         android:layout_width="190dp"
         android:layout_height="190dp"
         android:layout_gravity="center_horizontal"
@@ -38,6 +38,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="90dp">
         <de.hdodenhof.circleimageview.CircleImageView
+
+            android:id="@+id/set_profile_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/imgplaceholder"
@@ -63,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/upp"
-        android:layout_below="@+id/set_profile_image"
+        android:layout_below="@+id/set_profile_image1"
         android:orientation="horizontal"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
