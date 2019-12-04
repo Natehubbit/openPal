@@ -49,18 +49,11 @@ public class FindFriendsActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Find Friends");
-    }
-
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
 
         FirebaseRecyclerOptions<Contacts> options =
                 new FirebaseRecyclerOptions.Builder<Contacts>()
-                .setQuery(UsersRef, Contacts.class)
-                .build();
+                        .setQuery(UsersRef, Contacts.class)
+                        .build();
 
         FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder>(options) {
@@ -110,6 +103,66 @@ public class FindFriendsActivity extends AppCompatActivity
 
         adapter.startListening();
     }
+
+
+//    @Override
+//    protected void onStart()
+//    {
+//        super.onStart();
+//
+//        FirebaseRecyclerOptions<Contacts> options =
+//                new FirebaseRecyclerOptions.Builder<Contacts>()
+//                .setQuery(UsersRef, Contacts.class)
+//                .build();
+//
+//        FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder> adapter =
+//                new FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder>(options) {
+//                    @Override
+//                    protected void onBindViewHolder(@NonNull final FindFriendViewHolder holder, final int position, @NonNull final Contacts model)
+//                    {
+//                        holder.userName.setText(model.getName());
+//                        holder.userStatus.setText(model.getStatus());
+//                        Picasso.get().load(model.getImage()).placeholder(R.drawable.imgplaceholder).networkPolicy(NetworkPolicy.OFFLINE).into(holder.profileImage, new Callback() {
+//                            @Override
+//                            public void onSuccess() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Exception e) {
+//                                Picasso.get().load(model.getImage()).into(holder.profileImage);
+//
+//                            }
+//                        });
+//
+//
+//                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view)
+//                            {
+//                                String visit_user_id = getRef(position).getKey();
+//
+//                                Intent profileIntent = new Intent(FindFriendsActivity.this, ProfileActivity.class);
+//                                profileIntent.putExtra("visit_user_id", visit_user_id);
+//                                startActivity(profileIntent);
+//                            }
+//                        });
+//                    }
+//
+//                    @NonNull
+//                    @Override
+//                    public FindFriendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+//                    {
+//                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
+//                        FindFriendViewHolder viewHolder = new FindFriendViewHolder(view);
+//                        return viewHolder;
+//                    }
+//                };
+//
+//        FindFriendsRecyclerList.setAdapter(adapter);
+//
+//        adapter.startListening();
+//    }
 
 
 

@@ -89,8 +89,7 @@ public class ProfileActivity extends AppCompatActivity
                     String userName = dataSnapshot.child("name").getValue().toString();
                     String userstatus = dataSnapshot.child("status").getValue().toString();
 
-                    //TODO change the placeholder for this
-                    Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_launcher_background).into(userProfileImage, new Callback() {
+                    Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(userProfileImage, new Callback() {
                         @Override
                         public void onSuccess() {
 

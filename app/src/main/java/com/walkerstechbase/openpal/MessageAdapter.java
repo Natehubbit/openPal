@@ -32,6 +32,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
+//TODO make seperate adapter for group messages for delete functions to work
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder>
 {
     private List<Messages> userMessagesList;
@@ -172,8 +174,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if (fromUserID.equals(messageSenderId)){
                 messageViewHolder.messageSenderPicture.setVisibility(View.VISIBLE);
 
-                //TODO change the placeholder for this imageview
-                Picasso.get().load(messages.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).into(messageViewHolder.messageSenderPicture, new Callback() {
+                Picasso.get().load(messages.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.photoplaceholder).into(messageViewHolder.messageSenderPicture, new Callback() {
                     @Override
                     public void onSuccess() {
 

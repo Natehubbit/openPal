@@ -23,7 +23,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Job Posting"
+        android:text="Post Job"
         android:textSize="25sp"
         android:gravity="center"
         android:layout_margin="20dp"/>
@@ -35,6 +35,7 @@
         android:hint="Title"
         android:layout_margin="20dp"
         android:maxLines="1"
+        android:singleLine="true"
         android:background="@drawable/student_btn_bg"/>
 
     <EditText

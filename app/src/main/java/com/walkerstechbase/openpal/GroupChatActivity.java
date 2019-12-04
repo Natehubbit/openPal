@@ -70,14 +70,14 @@ public class GroupChatActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
 
-        InitializeFields();
+
 
 
 
 
         currentGroupName = getIntent().getExtras().get("groupName").toString();
-        Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
-
+       // Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
+        InitializeFields();
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
@@ -270,7 +270,7 @@ public class GroupChatActivity extends AppCompatActivity
                 {
                     if (task.isSuccessful())
                     {
-                        Toast.makeText(GroupChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(GroupChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
@@ -335,12 +335,20 @@ public class GroupChatActivity extends AppCompatActivity
 
     private void InitializeFields()
     {
-        mToolbar = (Toolbar) findViewById(R.id.group_chat_bar_layout);
+        mToolbar = findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(currentGroupName);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        SendMessageButton = (ImageButton) findViewById(R.id.send_message_button);
-        userMessageInput = (EditText) findViewById(R.id.input_group_message);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        SendMessageButton = findViewById(R.id.send_message_button);
+        userMessageInput = findViewById(R.id.input_group_message);
 //        displayTextMessages = (TextView) findViewById(R.id.group_chat_text_display);
 //        mScrollView = (ScrollView) findViewById(R.id.my_scroll_view);
 

@@ -51,7 +51,6 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
-    //TODO move all functions in onStart to onCreate
     private String messageReceiverID, messageReceiverName, messageReceiverImage, messageSenderID;
 
     private TextView userName, userLastSeen;
@@ -370,7 +369,7 @@ public class ChatActivity extends AppCompatActivity {
                                     if (task.isSuccessful())
                                     {
                                         loadingBar.dismiss();
-                                        Toast.makeText(ChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
+                                       // Toast.makeText(ChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
                                     }
                                     else
                                     {
@@ -509,7 +508,7 @@ public class ChatActivity extends AppCompatActivity {
                 {
                     if (task.isSuccessful())
                     {
-                        Toast.makeText(ChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

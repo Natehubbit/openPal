@@ -58,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity
     private ProgressDialog loadingBar;
 
     private Toolbar SettingsToolBar;
-
+    String downloaedUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -169,7 +169,7 @@ public class SettingsActivity extends AppCompatActivity
                                 filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        String downloaedUrl = uri.toString();
+                                        downloaedUrl = uri.toString();
 
                                         RootRef.child("Users").child(currentUserID).child("image")
                                                 .setValue(downloaedUrl)
@@ -233,6 +233,7 @@ public class SettingsActivity extends AppCompatActivity
                 profileMap.put("uid", currentUserID);
                 profileMap.put("name", setUserName);
                 profileMap.put("status", setStatus);
+                profileMap.put("image", downloaedUrl);
             RootRef.child("Users").child(currentUserID).updateChildren(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -270,7 +271,11 @@ public class SettingsActivity extends AppCompatActivity
 
                             userName.setText(retrieveUserName);
                             userStatus.setText(retrievesStatus);
-                            Picasso.get().load(retrieveProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(userProfileImage, new Callback() {
+
+                            if (retrieveProfileImage.isEmpty()){
+                               // Toast.makeText(SettingsActivity.this, "no profile photo", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Picasso.get().load(retrieveProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(userProfileImage, new Callback() {
                                 @Override
                                 public void onSuccess() {
 
@@ -281,6 +286,8 @@ public class SettingsActivity extends AppCompatActivity
                                     Picasso.get().load(retrieveProfileImage).into(userProfileImage);
                                 }
                             });
+                            }
+
                         }
                         else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")))
                         {

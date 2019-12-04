@@ -35,6 +35,7 @@ public class JobPostings extends AppCompatActivity {
     FirebaseListAdapter<Jobs> firebaseListAdapter;
     Toolbar toolbar;
 
+    String getTitle, getContent, getTimeStanp, getImg, getPostedBy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,26 +86,31 @@ public class JobPostings extends AppCompatActivity {
 
             @Override
             protected void populateView(View v, Jobs model, int position) {
-                TextView title = (TextView) v.findViewById(R.id.job_item_title);
+                final TextView title = (TextView) v.findViewById(R.id.job_item_title);
                 TextView content = (TextView) v.findViewById(R.id.job_item_content);
                 TextView postedBy = (TextView) v.findViewById(R.id.job_item_postedBy);
                 final CircleImageView image =  v.findViewById(R.id.job_item_image);
                 TextView timestamp = v.findViewById(R.id.job_item_timestamp);
 
-                final String imgUrl;
 
-                imgUrl = model.getImgUrl();
-                title.setText(model.getTitle());
-                content.setText(model.getContents());
-                timestamp.setText(model.getTimestamp());
+
+                getTitle = model.getTitle();
+                getImg = model.getImgUrl();
+                getContent = model.getContents();
+                getTimeStanp = model.getTimestamp();
+                getPostedBy = model.getPostBy();
+
+                title.setText(getTitle);
+                content.setText(getContent);
+                timestamp.setText(getTimeStanp);
                 if (model.getPostBy() == null){
                     postedBy.setText("Anon");
                 }else{
-                    postedBy.setText( model.getPostBy());
+                    postedBy.setText(getPostedBy);
                 }
 
 
-                Picasso.get().load(imgUrl).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(image, new Callback() {
+                Picasso.get().load(getImg).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(image, new Callback() {
                     @Override
                     public void onSuccess() {
 
@@ -112,7 +118,17 @@ public class JobPostings extends AppCompatActivity {
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(imgUrl).into(image);
+                        Picasso.get().load(getImg).into(image);
+                    }
+                });
+
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(JobPostings.this, JobPostingsDetails.class);
+                        intent.putExtra("jobTitle", getTitle);
+                        intent.putExtra("jobContent", getContent);
+                        startActivity(intent);
                     }
                 });
             }

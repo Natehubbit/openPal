@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        //TODO remove all toasts
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -225,7 +224,10 @@ public class MainActivity extends AppCompatActivity
         builder.setTitle("Enter Group Name :");
 
         final EditText groupNameField = new EditText(MainActivity.this);
-        groupNameField.setHint("e.g Coding Cafe");
+        groupNameField.setBackground(getResources().getDrawable(R.color.colorAccent));
+        groupNameField.setHint(" ");
+        groupNameField.setTextColor(getResources().getColor(android.R.color.white));
+        groupNameField.setPadding(40,40, 40,40);
         builder.setView(groupNameField);
 
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
@@ -267,7 +269,7 @@ public class MainActivity extends AppCompatActivity
                     {
                         if (task.isSuccessful())
                         {
-                            Toast.makeText(MainActivity.this, groupName + " group is Created Successfully...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, groupName + " Group Created Successfully...", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
