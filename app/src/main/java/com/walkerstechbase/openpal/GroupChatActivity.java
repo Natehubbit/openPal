@@ -48,7 +48,6 @@ public class GroupChatActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
     private DatabaseReference UsersRef, GroupNameRef, GroupMessageKeyRef;
-
     private String currentGroupName,  currentUserName, currentDate, currentTime, currentUserImage;
     String currentUserID;
     String saveCurrentTime, saveCurrentDate;
@@ -56,11 +55,11 @@ public class GroupChatActivity extends AppCompatActivity
     DatabaseReference RootRef;
 
     //new new
-    private final List<Messages> messagesList = new ArrayList<>();
+    private final List<GroupMessages> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
-    private MessageAdapter messageAdapter;
+    private GroupMessageAdapter groupMessageAdapter;
     private RecyclerView groupMessagesList;
-    Messages messages;
+    GroupMessages messages;
 
 
 
@@ -110,11 +109,11 @@ public class GroupChatActivity extends AppCompatActivity
 
                     // DisplayMessages(dataSnapshot);
 
-                    messages = dataSnapshot.getValue(Messages.class);
+                    messages = dataSnapshot.getValue(GroupMessages.class);
 
                     messagesList.add(messages);
 
-                    messageAdapter.notifyDataSetChanged();
+                    groupMessageAdapter.notifyDataSetChanged();
 
                     groupMessagesList.smoothScrollToPosition(groupMessagesList.getAdapter().getItemCount());
                 }
@@ -127,11 +126,11 @@ public class GroupChatActivity extends AppCompatActivity
                 {
 //                    DisplayMessages(dataSnapshot);
 
-                    messages = dataSnapshot.getValue(Messages.class);
+                    messages = dataSnapshot.getValue(GroupMessages.class);
 
                     messagesList.add(messages);
 
-                    messageAdapter.notifyDataSetChanged();
+                    groupMessageAdapter.notifyDataSetChanged();
 
                     groupMessagesList.smoothScrollToPosition(groupMessagesList.getAdapter().getItemCount());
                 }
@@ -139,7 +138,9 @@ public class GroupChatActivity extends AppCompatActivity
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                groupMessageAdapter.notifyDataSetChanged();
+                finish();
+                startActivity(getIntent());
             }
 
             @Override
@@ -162,11 +163,11 @@ public class GroupChatActivity extends AppCompatActivity
 //        GroupNameRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                messages = dataSnapshot.getValue(Messages.class);
+//                messages = dataSnapshot.getValue(GroupMessages.class);
 //
 //                messagesList.add(messages);
 //
-//                messageAdapter.notifyDataSetChanged();
+//                groupMessageAdapter.notifyDataSetChanged();
 //
 //                groupMessagesList.smoothScrollToPosition(groupMessagesList.getAdapter().getItemCount());
 //            }
@@ -180,11 +181,11 @@ public class GroupChatActivity extends AppCompatActivity
 //                    @Override
 //                    public void onChildAdded(DataSnapshot dataSnapshot, String s)
 //                    {
-//                        messages = dataSnapshot.getValue(Messages.class);
+//                        messages = dataSnapshot.getValue(GroupMessages.class);
 //
 //                        messagesList.add(messages);
 //
-//                        messageAdapter.notifyDataSetChanged();
+//                        groupMessageAdapter.notifyDataSetChanged();
 //
 //                        groupMessagesList.smoothScrollToPosition(groupMessagesList.getAdapter().getItemCount());
 //                    }
@@ -196,7 +197,7 @@ public class GroupChatActivity extends AppCompatActivity
 //
 //                    @Override
 //                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                        messageAdapter.notifyDataSetChanged();
+//                        groupMessageAdapter.notifyDataSetChanged();
 //                        finish();
 //                        startActivity(getIntent());
 //
@@ -243,6 +244,7 @@ public class GroupChatActivity extends AppCompatActivity
         {
             String messageSenderRef = "Groups/"  + currentGroupName;
             String messageReceiverRef = "Groups/" + currentGroupName ;
+
 
             DatabaseReference userMessageKeyRef = RootRef.child("Groups")
                     .child(currentGroupName).push();
@@ -296,11 +298,11 @@ public class GroupChatActivity extends AppCompatActivity
 //                {
 //                   // DisplayMessages(dataSnapshot);
 //
-//                    messages = dataSnapshot.getValue(Messages.class);
+//                    messages = dataSnapshot.getValue(GroupMessages.class);
 //
 //                    messagesList.add(messages);
 //
-//                    messageAdapter.notifyDataSetChanged();
+//                    groupMessageAdapter.notifyDataSetChanged();
 //
 //                    groupMessagesList.smoothScrollToPosition(groupMessagesList.getAdapter().getItemCount());
 //                }
@@ -355,10 +357,10 @@ public class GroupChatActivity extends AppCompatActivity
 
 
         linearLayoutManager = new LinearLayoutManager(this);
-        messageAdapter = new MessageAdapter(messagesList);
+        groupMessageAdapter = new GroupMessageAdapter(messagesList);
         groupMessagesList = findViewById(R.id.private_messages_list_of_users);
         groupMessagesList.setLayoutManager(linearLayoutManager);
-        groupMessagesList.setAdapter(messageAdapter);
+        groupMessagesList.setAdapter(groupMessageAdapter);
     }
 
 
