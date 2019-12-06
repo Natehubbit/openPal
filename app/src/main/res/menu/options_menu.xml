@@ -11,31 +11,38 @@
         android:id="@+id/main_find_friends_option"
         android:title="Find Friends"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_group_add_black_24dp"/>
+        android:icon="@drawable/ic_group_add_black_24dp"
+        android:iconTint="@android:color/white"
+        android:iconTintMode="add"/>
 
     <item
         android:id="@+id/main_job_postings"
         android:title="Job Postings"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_work_black_24dp"/>
 
     <item
         android:id="@+id/main_counselling_session"
         android:title="Counselling Session"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_handshake"/>
 
-    <item
-        android:id="@+id/main_create_group_option"
-        android:title="Create Group"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/main_create_group_option"-->
+<!--        android:title="Create Group"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        android:icon="@drawable/ic_person_black_24dp"/>-->
 
     <item
         android:id="@+id/main_settings_option"
         android:title="Profile"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_person_black_24dp"/>
 
     <item
         android:id="@+id/main_logout_option"
         android:title="Logout"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_logout"/>
 
 </menu>

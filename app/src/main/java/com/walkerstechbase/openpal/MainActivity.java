@@ -4,21 +4,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener
 {
     private Toolbar mToolbar;
     private ViewPager myViewPager;
@@ -44,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference RootRef;
     private String currentUserID;
 
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,9 +67,26 @@ public class MainActivity extends AppCompatActivity
 
 
         mToolbar = findViewById(R.id.main_page_toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(android.R.color.white)));
         setSupportActionBar(mToolbar);
         //mToolbar.setTitle("OpenPal");
         //getSupportActionBar().setTitle("OpenPal2");
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+//        actionBarDrawerToggle = navigationView.getActionBarDrawerToggle();
+        //Code below opens drawer
+        actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
 
 
         myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
@@ -150,7 +175,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.options_menu, menu);
+        getMenuInflater().inflate(R.menu.small_menu, menu);
 
         return true;
     }
@@ -161,57 +186,9 @@ public class MainActivity extends AppCompatActivity
     {
         super.onOptionsItemSelected(item);
 
-        if (item.getItemId() == R.id.main_logout_option)
-        {
-
-            final AlertDialog.Builder builder;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                // builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
-            } else {
-                builder = new AlertDialog.Builder(this);
-            }
-            builder.setTitle("Logout?\n")
-                    .setMessage("Are you sure you want to logout of your account?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with logout
-                            try {
-                                updateUserStatus("offline");
-                                mAuth.signOut();
-                                SendUserToLoginActivity();
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    })
-                    //.setIcon(R.drawable.ic_bubble_chart_black_24dp)
-                    .show();
-        }
-        if (item.getItemId() == R.id.main_settings_option)
-        {
-            SendUserToSettingsActivity();
-        }
-        if (item.getItemId() == R.id.main_create_group_option)
-        {
-            //startActivity(new Intent(MainActivity.this, FindUser2.class));
-            RequestNewGroup();
-        }
         if (item.getItemId() == R.id.main_find_friends_option)
         {
             SendUserToFindFriendsActivity();
-        }
-        if(item.getItemId() == R.id.main_counselling_session){
-            SendUserToCounsellingActivity();
-        }
-        if (item.getItemId() == R.id.main_job_postings){
-            startActivity(new Intent(MainActivity.this, JobPostings.class));
         }
 
         return true;
@@ -324,5 +301,64 @@ public class MainActivity extends AppCompatActivity
         RootRef.child("Users").child(currentUserID).child("userState")
                 .updateChildren(onlineStateMap);
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        if (id == R.id.main_logout_option)
+        {
+
+            final AlertDialog.Builder builder;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Logout?\n")
+                    .setMessage("Are you sure you want to logout of your account?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with logout
+                            try {
+                                updateUserStatus("offline");
+                                mAuth.signOut();
+                                SendUserToLoginActivity();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    //.setIcon(R.drawable.ic_bubble_chart_black_24dp)
+                    .show();
+        }
+        if (id == R.id.main_settings_option)
+        {
+            SendUserToSettingsActivity();
+        }
+//        if (id == R.id.main_create_group_option)
+//        {
+//            //startActivity(new Intent(MainActivity.this, FindUser2.class));
+//            RequestNewGroup();
+//        }
+        if (id == R.id.main_find_friends_option)
+        {
+            SendUserToFindFriendsActivity();
+        }
+        if(id == R.id.main_counselling_session){
+            SendUserToCounsellingActivity();
+        }
+        if (id == R.id.main_job_postings){
+            startActivity(new Intent(MainActivity.this, JobPostings.class));
+        }
+        return true;
     }
 }

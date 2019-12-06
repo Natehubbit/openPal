@@ -74,12 +74,14 @@ public class JobPostings extends AppCompatActivity {
         });
 
 
+
         //fireBase Ui
         Query query = databaseReference;
 
         FirebaseListOptions<Jobs> options = new FirebaseListOptions.Builder<Jobs>()
                 .setQuery(databaseReference, Jobs.class)
                 .setLayout(R.layout.jobs_items)
+                .setLifecycleOwner(this)
                 .build();
 
         firebaseListAdapter = new FirebaseListAdapter<Jobs>(options) {
@@ -138,20 +140,23 @@ public class JobPostings extends AppCompatActivity {
             public Jobs getItem(int position) {
                 return super.getItem(super.getCount() - position - 1);
             }
+
         };
+
         listView.setAdapter(firebaseListAdapter);
+//        firebaseListAdapter.startListening();
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseListAdapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        firebaseListAdapter.stopListening();
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        firebaseListAdapter.startListening();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        firebaseListAdapter.stopListening();
+//    }
 }

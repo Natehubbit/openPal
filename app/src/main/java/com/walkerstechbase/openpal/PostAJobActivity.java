@@ -48,6 +48,8 @@ public class PostAJobActivity extends AppCompatActivity {
         postJobBtn = findViewById(R.id.post_job_btn);
         toolbar = findViewById(R.id.post_job_toolbar);
         mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("job postings");
+
 
 
         toolbar.setTitle("Post Job");
@@ -74,10 +76,7 @@ public class PostAJobActivity extends AppCompatActivity {
                 jobContent = postJobContent.getText().toString();
 
 
-                final Jobs jobbies = new Jobs();
-                jobbies.setTitle(jobTitle);
-                jobbies.setContents(jobContent);
-                jobbies.setTimestamp(saveCurrentDate);
+
 
 
                 //getting user data
@@ -88,6 +87,10 @@ public class PostAJobActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
                             jobs = dataSnapshot.getValue(Jobs.class);
+                            Jobs jobbies = new Jobs();
+                            jobbies.setTitle(jobTitle);
+                            jobbies.setContents(jobContent);
+                            jobbies.setTimestamp(saveCurrentDate);
                             jobbies.setPostBy(jobs.getName());
                             jobbies.setImgUrl(jobs.getImage());
                             post(jobbies);
@@ -112,13 +115,12 @@ public class PostAJobActivity extends AppCompatActivity {
     }
 
     private void post(Jobs jobs1){
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("job postings");
-
 
         databaseReference.push().setValue(jobs1).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(PostAJobActivity.this, "Posted Succesfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Posted Succesfully", Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(PostAJobActivity.this, JobPostings.class));
                 finish();
             }
         });
