@@ -61,23 +61,32 @@
             </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/message_sender_image_view"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="5dp"
-        android:scaleType="centerCrop"
-        />
+        <com.comix.rounded.RoundedCornerImageView
+            android:id="@+id/message_sender_image_view"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            app:cornerBottomDisable="false"
+            app:cornerLeftDisable="false"
+            app:cornerRightDisable="false"
+            app:cornerTopDisable="false"
+            app:cornerRadius="6dp" />
 
-    <ImageView
+    <com.comix.rounded.RoundedCornerImageView
         android:id="@+id/message_receiver_image_view"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:scaleType="centerCrop"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        app:cornerBottomDisable="false"
+        app:cornerLeftDisable="false"
+        app:cornerRightDisable="false"
+        app:cornerTopDisable="false"
+        app:cornerRadius="6dp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/msg_cardView2"

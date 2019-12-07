@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.comix.rounded.RoundedCornerImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +53,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     {
         public TextView senderMessageText,senderMessageTime, receiverMessageText, receiverMessageTime, receiverName;
         public CircleImageView receiverProfileImage;
-        public ImageView messageSenderPicture, messageReceiverPicture;
+        public RoundedCornerImageView messageSenderPicture, messageReceiverPicture;
         RecyclerView recyclerView;
 
         public MessageViewHolder(@NonNull View itemView)

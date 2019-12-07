@@ -39,5 +39,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.firebaseui:firebase-ui-database:3.2.2'
 
+    //rounded corner for imageviews
+    implementation 'com.github.zjywill:roundedcornerimageview:1.1.0'
+
+
 }
 apply plugin: 'com.google.gms.google-services'
