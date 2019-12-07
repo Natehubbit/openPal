@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="3">
+
+    <ImageView
+        android:id="@+id/group_testimonies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/testimomies"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"/>
+    <RelativeLayout
+        android:id="@+id/group_advices"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/advice"
+            android:scaleType="centerCrop"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="ADVICE"
+            android:textSize="60sp"
+            android:gravity="center"
+            android:textColor="#ECECE3"
+            android:textStyle="bold"
+            android:fontFamily="serif-monospace"/>
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/group_prayers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/prayer"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"/>
+
+</LinearLayout>

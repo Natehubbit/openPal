@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -38,6 +41,9 @@ public class GroupsFragment extends Fragment
     private DatabaseReference GroupRef;
 
 
+    //new fields for new group layout
+    ImageView testimonies, prayers;
+    RelativeLayout advices;
 
     public GroupsFragment() {
         // Required empty public constructor
@@ -48,70 +54,108 @@ public class GroupsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        groupFragmentView = inflater.inflate(R.layout.fragment_groups, container, false);
+        groupFragmentView = inflater.inflate(R.layout.aaaaaaaaaa, container, false);
 
+        testimonies = groupFragmentView.findViewById(R.id.group_testimonies);
+        advices = groupFragmentView.findViewById(R.id.group_advices);
+        prayers = groupFragmentView.findViewById(R.id.group_prayers);
 
-        GroupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
-
-
-        IntializeFields();
-
-
-        RetrieveAndDisplayGroups();
-
-
-
-        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //setting onClick listeners for each textview
+        testimonies.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
-            {
-                String currentGroupName = adapterView.getItemAtPosition(position).toString();
+            public void onClick(View view) {
+                String textTestimonies = "Testimonies";
 
-                Intent groupChatIntent = new Intent(getContext(), GroupChatActivity.class);
-                groupChatIntent.putExtra("groupName" , currentGroupName);
-                startActivity(groupChatIntent);
+                Intent goToTestimonies = new Intent(getContext(), GroupChatActivity.class);
+                goToTestimonies.putExtra("groupName" , textTestimonies);
+                startActivity(goToTestimonies);
             }
         });
 
+        advices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String textAdvices = "Advices";
+
+                Intent goToAdvices = new Intent(getContext(), GroupChatActivity.class);
+                goToAdvices.putExtra("groupName" , textAdvices);
+                startActivity(goToAdvices);
+            }
+        });
+
+        prayers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String textPrayers = "Prayers";
+
+                Intent goToPrayers = new Intent(getContext(), GroupChatActivity.class);
+                goToPrayers.putExtra("groupName" , textPrayers);
+                startActivity(goToPrayers);
+            }
+        });
+//
+//
+//        GroupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
+//
+//
+//        IntializeFields();
+//
+//
+//        RetrieveAndDisplayGroups();
+//
+//
+//
+//        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+//            {
+//                String currentGroupName = adapterView.getItemAtPosition(position).toString();
+//
+//                Intent groupChatIntent = new Intent(getContext(), GroupChatActivity.class);
+//                groupChatIntent.putExtra("groupName" , currentGroupName);
+//                startActivity(groupChatIntent);
+//            }
+//        });
+//
 
         return groupFragmentView;
     }
 
 
 
-    private void IntializeFields()
-    {
-        list_view =  groupFragmentView.findViewById(R.id.list_view);
-        arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list_of_groups);
-        list_view.setAdapter(arrayAdapter);
-    }
-
-
-
-
-    private void RetrieveAndDisplayGroups()
-    {
-        GroupRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                Set<String> set = new HashSet<>();
-                Iterator iterator = dataSnapshot.getChildren().iterator();
-
-                while (iterator.hasNext())
-                {
-                    set.add(((DataSnapshot)iterator.next()).getKey());
-                }
-
-                list_of_groups.clear();
-                list_of_groups.addAll(set);
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    private void IntializeFields()
+//    {
+//        list_view =  groupFragmentView.findViewById(R.id.list_view);
+//        arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list_of_groups);
+//        list_view.setAdapter(arrayAdapter);
+//    }
+//
+//
+//
+//
+//    private void RetrieveAndDisplayGroups()
+//    {
+//        GroupRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot)
+//            {
+//                Set<String> set = new HashSet<>();
+//                Iterator iterator = dataSnapshot.getChildren().iterator();
+//
+//                while (iterator.hasNext())
+//                {
+//                    set.add(((DataSnapshot)iterator.next()).getKey());
+//                }
+//
+//                list_of_groups.clear();
+//                list_of_groups.addAll(set);
+//                arrayAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }
