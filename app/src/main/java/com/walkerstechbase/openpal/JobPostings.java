@@ -32,7 +32,7 @@ public class JobPostings extends AppCompatActivity {
     ListView listView ;
     DatabaseReference databaseReference;
     private ArrayList<Jobs> mJobs = new ArrayList<Jobs>();
-    FirebaseListAdapter<Jobs> firebaseListAdapter;
+
     Toolbar toolbar;
 
     String getTitle, getContent, getTimeStanp, getImg, getPostedBy;
@@ -84,15 +84,15 @@ public class JobPostings extends AppCompatActivity {
                 .setLifecycleOwner(this)
                 .build();
 
-        firebaseListAdapter = new FirebaseListAdapter<Jobs>(options) {
+        FirebaseListAdapter<Jobs> firebaseListAdapter = new FirebaseListAdapter<Jobs>(options) {
 
             @Override
-            protected void populateView(View v, Jobs model, int position) {
+            protected void populateView(final View v, final Jobs model, int position) {
                 final TextView title = (TextView) v.findViewById(R.id.job_item_title);
-                TextView content = (TextView) v.findViewById(R.id.job_item_content);
-                TextView postedBy = (TextView) v.findViewById(R.id.job_item_postedBy);
+                final TextView content = (TextView) v.findViewById(R.id.job_item_content);
+                final TextView postedBy = (TextView) v.findViewById(R.id.job_item_postedBy);
                 final CircleImageView image =  v.findViewById(R.id.job_item_image);
-                TextView timestamp = v.findViewById(R.id.job_item_timestamp);
+                final TextView timestamp = v.findViewById(R.id.job_item_timestamp);
 
 
 
@@ -127,24 +127,33 @@ public class JobPostings extends AppCompatActivity {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        getTitle = model.getTitle();
+                        getContent = model.getContents();
+
+
                         Intent intent = new Intent(JobPostings.this, JobPostingsDetails.class);
                         intent.putExtra("jobTitle", getTitle);
                         intent.putExtra("jobContent", getContent);
                         startActivity(intent);
                     }
                 });
+
+
             }
 
-            @NonNull
-            @Override
-            public Jobs getItem(int position) {
-                return super.getItem(super.getCount() - position - 1);
-            }
+
+
+//            @NonNull
+//            @Override
+//            public Jobs getItem(int position) {
+//                return super.getItem(super.getCount() - position - 1);
+//            }
 
         };
 
         listView.setAdapter(firebaseListAdapter);
 //        firebaseListAdapter.startListening();
+
 
     }
 

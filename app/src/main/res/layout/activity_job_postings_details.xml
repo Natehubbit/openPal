@@ -1,36 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".JobPostingsDetails"
-    android:nestedScrollingEnabled="true"
-    android:padding="20dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/title_TV"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/job_posting_details_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/colorPrimary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TTILE"
-        android:gravity="center_horizontal"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_marginBottom="10dp"/>
+        android:nestedScrollingEnabled="true"
+        android:padding="20dp"
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#868484"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"/>
+        <TextView
+            android:id="@+id/title_TV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TTILE"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginBottom="10dp"/>
 
-    <TextView
-        android:id="@+id/content_TV"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#868484"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"/>
 
+        <TextView
+            android:id="@+id/content_TV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Content"/>
+
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

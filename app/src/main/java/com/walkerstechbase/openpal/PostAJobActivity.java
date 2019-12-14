@@ -28,7 +28,7 @@ import java.util.Calendar;
 public class PostAJobActivity extends AppCompatActivity {
     EditText postJobTitle, postJobContent;
     ImageButton postJobBtn;
-    String jobTitle, jobContent,saveCurrentDate;
+    String jobTitle, jobContent,saveCurrentDate, postBy , imgUrl;
     Toolbar toolbar;
 
     //FireBase
@@ -68,6 +68,32 @@ public class PostAJobActivity extends AppCompatActivity {
             }
         });
 
+        final Jobs jobbies = new Jobs();
+
+        //getting user data
+        String currentUserID = mAuth.getCurrentUser().getUid();
+        getUserInfoReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
+        getUserInfoReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    jobs = dataSnapshot.getValue(Jobs.class);
+
+                    postBy = jobs.getName();
+                    imgUrl = jobs.getImage();
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         //button onClick
         postJobBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,37 +102,14 @@ public class PostAJobActivity extends AppCompatActivity {
                 jobContent = postJobContent.getText().toString();
 
 
+                jobbies.setTitle(jobTitle);
+                jobbies.setContents(jobContent);
+                jobbies.setTimestamp(saveCurrentDate);
+                jobbies.setPostBy(postBy);
+                jobbies.setImgUrl(imgUrl);
 
 
-
-                //getting user data
-                String currentUserID = mAuth.getCurrentUser().getUid();
-                getUserInfoReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
-                getUserInfoReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            jobs = dataSnapshot.getValue(Jobs.class);
-                            Jobs jobbies = new Jobs();
-                            jobbies.setTitle(jobTitle);
-                            jobbies.setContents(jobContent);
-                            jobbies.setTimestamp(saveCurrentDate);
-                            jobbies.setPostBy(jobs.getName());
-                            jobbies.setImgUrl(jobs.getImage());
-                            post(jobbies);
-                        }
-
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-
+                post(jobbies);
 
             }
         });

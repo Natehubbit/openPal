@@ -309,6 +309,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         if (id == R.id.main_logout_option)
         {
+            //close drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+
 
             final AlertDialog.Builder builder;
 
@@ -342,6 +345,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         if (id == R.id.main_settings_option)
         {
+            //close drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+
             SendUserToSettingsActivity();
         }
 //        if (id == R.id.main_create_group_option)
@@ -351,12 +357,21 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 //        }
         if (id == R.id.main_find_friends_option)
         {
+            //close drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+
             SendUserToFindFriendsActivity();
         }
         if(id == R.id.main_counselling_session){
+            //close drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+
             SendUserToCounsellingActivity();
         }
         if (id == R.id.main_job_postings){
+            //close drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+
             startActivity(new Intent(MainActivity.this, JobPostings.class));
         }
         return true;
