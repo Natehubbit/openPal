@@ -75,7 +75,7 @@ public class GroupsFragment extends Fragment
         advices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String textAdvices = "Advices";
+                String textAdvices = "Godly Advices";
 
                 Intent goToAdvices = new Intent(getContext(), GroupChatActivity.class);
                 goToAdvices.putExtra("groupName" , textAdvices);
@@ -86,7 +86,7 @@ public class GroupsFragment extends Fragment
         prayers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String textPrayers = "Prayers";
+                String textPrayers = "Prayer Topics";
 
                 Intent goToPrayers = new Intent(getContext(), GroupChatActivity.class);
                 goToPrayers.putExtra("groupName" , textPrayers);
