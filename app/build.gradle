@@ -41,7 +41,11 @@ dependencies {
 
     //rounded corner for imageviews
     implementation 'com.github.zjywill:roundedcornerimageview:1.1.0'
-
+    //toggle switch
+    implementation 'com.github.angads25:toggle:1.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

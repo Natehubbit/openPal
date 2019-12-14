@@ -6,4 +6,10 @@
     <color name="colorAccent">#004265</color>
 <!--    <color name="colorPrimaryDark">#FFB401</color>-->
     <color name="colorPrimary">#004265</color>
+
+
+
+    <color name="disable_foreground_grey">#42221f1f</color>
+    <color name="disable_thumb_grey">#1c000000</color>
+    <color name="enable_thumb_grey">#46bdbf</color>
 </resources>

@@ -47,6 +47,7 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".VerifyPhone" />
         <activity android:name=".ChatActivity2" />
+        <activity android:name=".kotfile" />
     </application>
 
 </manifest>

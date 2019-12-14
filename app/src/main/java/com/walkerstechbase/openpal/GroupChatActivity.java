@@ -1,6 +1,7 @@
 package com.walkerstechbase.openpal;
 
 
+import android.graphics.SweepGradient;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -22,6 +23,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.angads25.toggle.interfaces.OnToggledListener;
+import com.github.angads25.toggle.model.ToggleableView;
+import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,15 +72,11 @@ public class GroupChatActivity extends AppCompatActivity
     SwitchCompat mySwitch;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
-
-
-
 
 
         currentGroupName = getIntent().getExtras().get("groupName").toString();
@@ -495,8 +495,7 @@ public class GroupChatActivity extends AppCompatActivity
             }
         });
 
-
-
         return true;
     }
+
 }
