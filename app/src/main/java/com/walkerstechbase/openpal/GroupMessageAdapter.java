@@ -60,6 +60,7 @@ public class GroupMessageAdapter extends RecyclerView.Adapter<GroupMessageAdapte
 
         String fromUserID = messages.getFrom();
         String fromMessageType = messages.getType();
+        String fromUserName = messages.getFromName();
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(fromUserID);
 
@@ -130,7 +131,11 @@ public class GroupMessageAdapter extends RecyclerView.Adapter<GroupMessageAdapte
                 holder.receiverName.setTextColor(Color.BLACK);
                 holder.receiverMessageTime.setTextColor(Color.BLACK);
                 holder.receiverMessageText.setText(messages.getMessage());
-                holder.receiverName.setText(messages.getFromName());
+                if (fromUserName == null){
+                    holder.receiverName.setText("Anon");
+                }else{
+                    holder.receiverName.setText(fromUserName);
+                }
                 holder.receiverMessageTime.setText(messages.getTime() + " - " + messages.getDate());
             }
         }

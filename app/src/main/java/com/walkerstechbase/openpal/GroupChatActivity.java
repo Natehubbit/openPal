@@ -3,8 +3,11 @@ package com.walkerstechbase.openpal;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,6 +65,8 @@ public class GroupChatActivity extends AppCompatActivity
     private RecyclerView groupMessagesList;
     GroupMessages messages;
 
+    SwitchCompat anonSwitch;
+
 
 
     @Override
@@ -68,7 +74,6 @@ public class GroupChatActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
-
 
 
 
@@ -85,7 +90,7 @@ public class GroupChatActivity extends AppCompatActivity
         GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
         RootRef = FirebaseDatabase.getInstance().getReference();
 
-        GetUserInfo();
+
 
         Calendar calendar = Calendar.getInstance();
 
@@ -440,5 +445,40 @@ public class GroupChatActivity extends AppCompatActivity
 //            displayTextMessages.append(chatName + " :\n" + chatMessage + "\n" + chatTime + "     " + chatDate + "\n\n\n");
 //            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.anon_switch_menu, menu);
+        MenuItem item = menu.findItem(R.id.anon_switch_menuItem);
+        item.setActionView(R.layout.anon_switch_layout);
+        final SwitchCompat mySwitch= item.getActionView().findViewById(R.id.anon_switch);
+
+//        mySwitch.setChecked(false);
+
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (compoundButton.isChecked()){
+                    Toast.makeText(GroupChatActivity.this, "Anon Enabled", Toast.LENGTH_SHORT).show();
+                    compoundButton.setChecked(true);
+                    b = true;
+                }else{
+                    Toast.makeText(GroupChatActivity.this, "Anon Disabled", Toast.LENGTH_SHORT).show();
+                    compoundButton.setChecked(false);
+                    b = false;
+                }
+            }
+        });
+
+        if (mySwitch.isChecked()){
+            Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show();
+        }else if (!mySwitch.isChecked()){
+            Toast.makeText(this, "Not checked", Toast.LENGTH_SHORT).show();
+            GetUserInfo();
+        }
+
+        return true;
     }
 }
