@@ -65,7 +65,7 @@ public class GroupChatActivity extends AppCompatActivity
     private RecyclerView groupMessagesList;
     GroupMessages messages;
 
-    SwitchCompat anonSwitch;
+    SwitchCompat mySwitch;
 
 
 
@@ -391,6 +391,25 @@ public class GroupChatActivity extends AppCompatActivity
     }
 
 
+    private void GetAnonInfo()
+    {
+        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                {
+                    currentUserName = null;
+                    currentUserImage = null;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     private void SaveMessageInfoToDatabase()
@@ -452,9 +471,13 @@ public class GroupChatActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.anon_switch_menu, menu);
         MenuItem item = menu.findItem(R.id.anon_switch_menuItem);
         item.setActionView(R.layout.anon_switch_layout);
-        final SwitchCompat mySwitch= item.getActionView().findViewById(R.id.anon_switch);
+        mySwitch= item.getActionView().findViewById(R.id.anon_switch);
 
 //        mySwitch.setChecked(false);
+
+        if (!mySwitch.isChecked()){
+            GetUserInfo();
+        }
 
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -463,21 +486,16 @@ public class GroupChatActivity extends AppCompatActivity
                 if (compoundButton.isChecked()){
                     Toast.makeText(GroupChatActivity.this, "Anon Enabled", Toast.LENGTH_SHORT).show();
                     compoundButton.setChecked(true);
-                    b = true;
+                    GetAnonInfo();
                 }else{
                     Toast.makeText(GroupChatActivity.this, "Anon Disabled", Toast.LENGTH_SHORT).show();
                     compoundButton.setChecked(false);
-                    b = false;
+                    GetUserInfo();
                 }
             }
         });
 
-        if (mySwitch.isChecked()){
-            Toast.makeText(this, "Checked", Toast.LENGTH_SHORT).show();
-        }else if (!mySwitch.isChecked()){
-            Toast.makeText(this, "Not checked", Toast.LENGTH_SHORT).show();
-            GetUserInfo();
-        }
+
 
         return true;
     }

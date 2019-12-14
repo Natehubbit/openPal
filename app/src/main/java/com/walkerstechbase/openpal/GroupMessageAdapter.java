@@ -61,39 +61,42 @@ public class GroupMessageAdapter extends RecyclerView.Adapter<GroupMessageAdapte
         String fromUserID = messages.getFrom();
         String fromMessageType = messages.getType();
         String fromUserName = messages.getFromName();
+        String fromUserImage = messages.getFromImage();
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(fromUserID);
 
-        usersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (dataSnapshot.hasChild("image"))
-                {
-                    final String receiverImage = dataSnapshot.child("image").getValue().toString();
+        if (fromUserImage == null){
+            Picasso.get().load("Anon").placeholder(R.drawable.imgplaceholder).into(holder.receiverProfileImage);
+        }else {
 
-                    Picasso.get().load(receiverImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(holder.receiverProfileImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
+            usersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild("image")) {
+                        final String receiverImage = dataSnapshot.child("image").getValue().toString();
 
-                        }
+                        Picasso.get().load(receiverImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(holder.receiverProfileImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
 
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().load(receiverImage).into(holder.receiverProfileImage);
+                            }
 
-                        }
-                    });
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(receiverImage).into(holder.receiverProfileImage);
+
+                            }
+                        });
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-
+        }
 
 
         holder.receiverName.setVisibility(View.GONE);
