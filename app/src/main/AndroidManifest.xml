@@ -15,7 +15,8 @@
         android:roundIcon="@drawable/logopen"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".JobPostingsDetails"></activity>
+        <activity android:name=".BookCounselling"></activity>
+        <activity android:name=".JobPostingsDetails" />
         <activity android:name=".JobPostings" />
         <activity android:name=".PostAJobActivity" />
         <activity android:name=".CounsellingActivity" />
