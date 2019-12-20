@@ -1,20 +1,25 @@
 package com.walkerstechbase.openpal;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +45,7 @@ public class CounsellingActivity extends AppCompatActivity {
     //private RecyclerView FirebaseRecyclerView;
     private LinearLayoutManager linearLayoutManager;
    // private CounsellorsAdapter coursecodeAdapter;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +58,16 @@ public class CounsellingActivity extends AppCompatActivity {
         listItems = new ArrayList<>();
         listKeys = new ArrayList<>();
 
-        String name = "";
 
-        DatabaseReference ref=FirebaseDatabase.getInstance().getReference();
-        Query query=ref.child("counsellors").orderByChild("name").equalTo(name);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("counsellors");
+        Query query = ref;
         FirebaseRecyclerOptions<Counsellor> options =
                 new FirebaseRecyclerOptions.Builder<Counsellor>()
                         .setQuery(query, Counsellor.class)
+                        .setLifecycleOwner(this)
                         .build();
 
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Counsellor, CounsellorViewHolder>(options) {
@@ -68,20 +77,43 @@ public class CounsellingActivity extends AppCompatActivity {
             @Override
             public CounsellorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LinearLayout.inflate(getApplicationContext(), R.layout.counsellor_list, null);
-
-
-                return null;
+                return new CounsellorViewHolder(view);
             }
 
             @Override
             protected void onBindViewHolder(@NonNull CounsellorViewHolder counsellorViewHolder, int i, @NonNull Counsellor counsellor) {
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                        for (DataSnapshot childsnap : dataSnapshot.getChildren()){
+
+                            Toast.makeText(getApplicationContext(), "jj " + childsnap.child("counsellorName").getValue().toString(), Toast.LENGTH_SHORT).show();
+                            name = counsellor.getCounsellorName();
+
+                            counsellorViewHolder.counsellorName.setText(name);
+                        }
+
+                        counsellorViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(getApplicationContext(), "counsellor "+ counsellorViewHolder.counsellorName.getText().toString(), Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), BookCounselling.class));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         };
 
 
 
-
+recyclerView.setAdapter(adapter);
 
 
 

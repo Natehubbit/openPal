@@ -16,8 +16,11 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.List;
 
 public class CounsellorViewHolder extends RecyclerView.ViewHolder{
+    TextView counsellorName;
 
     public CounsellorViewHolder(@NonNull View itemView) {
         super(itemView);
+
+        counsellorName = itemView.findViewById(R.id.counsellor_name);
     }
 }
