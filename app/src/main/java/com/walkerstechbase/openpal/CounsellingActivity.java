@@ -45,7 +45,7 @@ public class CounsellingActivity extends AppCompatActivity {
     //private RecyclerView FirebaseRecyclerView;
     private LinearLayoutManager linearLayoutManager;
    // private CounsellorsAdapter coursecodeAdapter;
-    String name;
+    String name, id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +88,9 @@ public class CounsellingActivity extends AppCompatActivity {
 
                         for (DataSnapshot childsnap : dataSnapshot.getChildren()){
 
-                            Toast.makeText(getApplicationContext(), "jj " + childsnap.child("counsellorName").getValue().toString(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "jj " + childsnap.child("counsellorName").getValue().toString(), Toast.LENGTH_SHORT).show();
                             name = counsellor.getCounsellorName();
+                            id = counsellor.getCounsellorID();
 
                             counsellorViewHolder.counsellorName.setText(name);
                         }
@@ -97,8 +98,10 @@ public class CounsellingActivity extends AppCompatActivity {
                         counsellorViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(getApplicationContext(), "counsellor "+ counsellorViewHolder.counsellorName.getText().toString(), Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), BookCounselling.class));
+                                Toast.makeText(getApplicationContext(), "counsellor "+ id, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(new Intent(getApplicationContext(), BookCounselling.class));
+                                intent.putExtra("counsellor_id",id);
+                                startActivity(intent);
                             }
                         });
                     }
@@ -160,6 +163,10 @@ recyclerView.setAdapter(adapter);
                 Log.w("AddNewActivity : ", "Failed to read value.", databaseError.toException());
             }
         });
+
+    }
+
+    private void getCounsellorDetails() {
 
     }
 }

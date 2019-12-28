@@ -68,7 +68,6 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private RecyclerView userMessagesList;
 
-
     private String saveCurrentTime, saveCurrentDate;
     private String checker = "", myUrl = "";
     private StorageTask uploadTask;

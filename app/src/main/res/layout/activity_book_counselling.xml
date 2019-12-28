@@ -24,7 +24,10 @@
             android:textStyle="bold"
             android:textColor="@color/colorAccent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="100dp"/>
+            android:gravity="center"
+            android:layout_marginBottom="100dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,19 +75,21 @@
                 android:layout_weight="4.2"
                 android:background="@drawable/bg_icon_left"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_telephone"
+                android:src="@drawable/ic_date_range_black_24dp"
                 android:padding="10dp"/>
-            <EditText
+            <TextView
                 android:id="@+id/book_counselling_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Date"
+                android:hint="dd/mm/yy"
                 android:textColorHint="@color/colorAccent"
                 android:textColor="@color/colorAccent"
-                android:inputType="phone"
+                android:inputType="date"
                 android:layout_weight="0.8"
                 android:background="@drawable/student_btn_bg"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:gravity="start|center"
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -104,17 +109,18 @@
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/ic_telephone"
                 android:padding="10dp"/>
-            <EditText
+            <TextView
                 android:id="@+id/book_counselling_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Time"
                 android:textColorHint="@color/colorAccent"
                 android:textColor="@color/colorAccent"
-                android:inputType="phone"
                 android:layout_weight="0.8"
                 android:background="@drawable/student_btn_bg"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:gravity="start|center"
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -187,13 +193,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="BOOT"
+                android:text="BOOK"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:padding="10dp"/>
             <ImageButton
-                android:id="@+id/send_ver_code_button"
+                android:id="@+id/book_counselling_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_btn_rounded"
