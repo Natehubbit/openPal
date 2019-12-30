@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,8 +38,9 @@ public class BookCounselling extends AppCompatActivity {
     private String saveCurrentTime, saveCurrentDate;
 
     TextView dateTV, timeTV;
+    EditText userName, userPhone;
     final Calendar myCalendar = Calendar.getInstance();
-    String time;
+    String date, time, name, phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +83,26 @@ public class BookCounselling extends AppCompatActivity {
         bookCounsellingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ContactsRef.child(senderUserID).child(receiverUserID)
-                        .child("Contacts").setValue("Saved")
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                SendMessage();
-                            }
-                        });
+                if (userName.length() < 1){
+                    userName.setError("Please provide your name");
+                }else if (userPhone.length() < 10){
+                    userPhone.setError("Phone is invalid");
+                }else if(dateTV.getText() == null){
+                    Toast.makeText(BookCounselling.this, "Define a date", Toast.LENGTH_SHORT).show();
+                }else if (timeTV == null){
+                    Toast.makeText(BookCounselling.this, "Define a time", Toast.LENGTH_SHORT).show();
+                }else if (userName!=null && userPhone.length() > 9 && dateTV != null && timeTV != null){
+
+                    ContactsRef.child(senderUserID).child(receiverUserID)
+                            .child("Contacts").setValue("Saved")
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    SendMessage();
+                                }
+                            });
+                }
+
             }
         });
 
@@ -143,6 +157,8 @@ public class BookCounselling extends AppCompatActivity {
         bookCounsellingBtn = findViewById(R.id.book_counselling_btn);
         dateTV = findViewById(R.id.book_counselling_date);
         timeTV = findViewById(R.id.book_counselling_time);
+        userName = findViewById(R.id.book_counselling_name);
+        userPhone = findViewById(R.id.book_counselling_phone_number);
     }
 
     private void updateLabel() {
@@ -150,11 +166,17 @@ public class BookCounselling extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         dateTV.setText(sdf.format(myCalendar.getTime()));
+        date = dateTV.getText().toString();
     }
 
     private void SendMessage()
     {
-        String messageText = "This should be the message";
+        time = timeTV.getText().toString();
+        date = dateTV.getText().toString();
+        phone = userPhone.getText().toString();
+        name = userName.getText().toString();
+
+        String messageText = "Hello, i am " + name + ", looking to seek help from you as a counsellor. \n I will like to know if you would be available on "+ date + " at " + time + " . Thank You. \n You can also reach me on " + phone;
 
         if (TextUtils.isEmpty(messageText))
         {
@@ -189,6 +211,9 @@ public class BookCounselling extends AppCompatActivity {
                 {
                     if (task.isSuccessful())
                     {
+                        Toast.makeText(getApplicationContext(), "Booked", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(BookCounselling.this, MainActivity.class));
+                        finish();
                         //Toast.makeText(ChatActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
                     }
                     else

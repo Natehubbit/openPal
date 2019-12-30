@@ -53,7 +53,7 @@
                 android:hint="Name"
                 android:textColorHint="@color/colorAccent"
                 android:textColor="@color/colorAccent"
-                android:inputType="phone"
+                android:inputType="text"
                 android:layout_weight="0.8"
                 android:background="@drawable/student_btn_bg"
                 android:padding="10dp"/>
@@ -107,7 +107,7 @@
                 android:layout_weight="4.2"
                 android:background="@drawable/bg_icon_left"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_telephone"
+                android:src="@drawable/ic_access_time_black_24dp"
                 android:padding="10dp"/>
             <TextView
                 android:id="@+id/book_counselling_time"
@@ -153,35 +153,35 @@
                 android:padding="10dp"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:orientation="horizontal"
-            android:weightSum="5"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="4.2"
-                android:background="@drawable/bg_icon_left"
-                android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_telephone"
-                android:padding="10dp"/>
-            <EditText
-                android:id="@+id/book_counselling_gender"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Gender"
-                android:textColorHint="@color/colorAccent"
-                android:textColor="@color/colorAccent"
-                android:inputType="phone"
-                android:layout_weight="0.8"
-                android:background="@drawable/student_btn_bg"
-                android:padding="10dp"/>
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="55dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="5"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginBottom="5dp">-->
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="4.2"-->
+<!--                android:background="@drawable/bg_icon_left"-->
+<!--                android:layout_marginEnd="5dp"-->
+<!--                android:src="@drawable/ic_telephone"-->
+<!--                android:padding="10dp"/>-->
+<!--            <EditText-->
+<!--                android:id="@+id/book_counselling_gender"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:hint="Gender"-->
+<!--                android:textColorHint="@color/colorAccent"-->
+<!--                android:textColor="@color/colorAccent"-->
+<!--                android:inputType="phone"-->
+<!--                android:layout_weight="0.8"-->
+<!--                android:background="@drawable/student_btn_bg"-->
+<!--                android:padding="10dp"/>-->
+<!--        </LinearLayout>-->
 
 
         <LinearLayout
