@@ -1,4 +1,22 @@
+//below is for one signal
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/'}
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.4, 0.99.99]'
+    }
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
+
+// above is for one signal
+
 apply plugin: 'com.android.application'
+
 
 android {
     compileSdkVersion 29
@@ -10,6 +28,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //below is for one signal
+        manifestPlaceholders = [
+                onesignal_app_id: '6967acef-2bfe-4117-ae66-2613d8c40681',
+                // Project number pulled from dashboard, local value is ignored.
+                onesignal_google_project_number: 'REMOTE'
+        ]
+        //above is for one signal
     }
     buildTypes {
         release {
@@ -47,6 +73,13 @@ dependencies {
     implementation 'com.github.zjywill:roundedcornerimageview:1.1.0'
     //toggle switch
     implementation 'com.github.angads25:toggle:1.1.0'
+
+    //notification
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+
+    //one signal
+    implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
 
 }
 apply plugin: 'com.google.gms.google-services'

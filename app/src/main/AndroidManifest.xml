@@ -15,7 +15,16 @@
         android:roundIcon="@drawable/logopen"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BookCounselling"></activity>
+        <service
+            android:name=".Notification.FirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".BookCounselling" />
         <activity android:name=".JobPostingsDetails" />
         <activity android:name=".JobPostings" />
         <activity android:name=".PostAJobActivity" />
@@ -48,7 +57,30 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".VerifyPhone" />
         <activity android:name=".ChatActivity2" />
-        <activity android:name=".kotfile" />
+
+        <service
+            android:name=".Notification.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service> <!-- <service android:name=".Notification.MyFIrebaseMessaging" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.MESSAGING_EVENT"/> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <service
+            android:name=".Notification.MyFIrebaseMessaging"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>

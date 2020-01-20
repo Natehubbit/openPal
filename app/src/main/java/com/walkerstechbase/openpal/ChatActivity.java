@@ -29,17 +29,25 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.walkerstechbase.openpal.Notification.APIService;
+import com.walkerstechbase.openpal.Notification.Client;
+import com.walkerstechbase.openpal.Notification.Data;
+import com.walkerstechbase.openpal.Notification.MyResponse;
+import com.walkerstechbase.openpal.Notification.Sender;
+import com.walkerstechbase.openpal.Notification.Token;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +57,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
     private String messageReceiverID, messageReceiverName, messageReceiverImage, messageSenderID;
@@ -59,6 +70,7 @@ public class ChatActivity extends AppCompatActivity {
     private Toolbar ChatToolBar;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
+    DatabaseReference reference;
 
     private ImageButton SendMessageButton, SendFilesButton;
     private EditText MessageInputText;
@@ -76,6 +88,11 @@ public class ChatActivity extends AppCompatActivity {
 
     Messages messages;
 
+    APIService apiService;
+    String messageText;
+    FirebaseUser firebaseUser;
+    boolean notify = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -86,7 +103,7 @@ public class ChatActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         messageSenderID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
-
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         messageReceiverID = getIntent().getExtras().get("visit_user_id").toString();
         messageReceiverName = getIntent().getExtras().get("visit_user_name").toString();
@@ -100,11 +117,14 @@ public class ChatActivity extends AppCompatActivity {
 
         //Picasso.get().load(messageReceiverImage).into(userImage);
 
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         SendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
+
+                notify =true;
                 SendMessage();
             }
         });
@@ -198,9 +218,63 @@ public class ChatActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
+        final String msg = messageText;
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                 Contacts contacts = dataSnapshot.getValue(Contacts.class);
+                 if (notify){
+                     sendNotification(messageReceiverName, contacts.getName(), msg);
+                 }
+                 notify = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
+    private void sendNotification(String messageReceiverName, String name, String msg) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(messageReceiverName);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(firebaseUser.getUid(), R.drawable.logopen, userName+": "+messageText, "New Message", messageReceiverID);
 
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if (response.code() == 200){
+                                        if (response.body().success == 1){
+                                            Toast.makeText(ChatActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     private void IntializeControllers()
@@ -472,7 +546,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void SendMessage()
     {
-        String messageText = MessageInputText.getText().toString();
+        messageText = MessageInputText.getText().toString();
 
         if (TextUtils.isEmpty(messageText))
         {
