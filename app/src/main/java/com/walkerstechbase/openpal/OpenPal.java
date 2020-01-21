@@ -5,12 +5,16 @@ import android.app.Application;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 public class OpenPal extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
+        // This line needs to be executed before any usage of EmojiTextView, EmojiEditText or EmojiButton.
+        EmojiManager.install(new IosEmojiProvider());
 
         //FireBase database
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);

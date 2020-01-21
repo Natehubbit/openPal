@@ -81,6 +81,9 @@ dependencies {
     //one signal
     implementation 'com.onesignal:OneSignal:[3.11.2, 3.99.99]'
 
+    //ios emojis
+    implementation 'com.vanniktech:emoji-ios:0.6.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

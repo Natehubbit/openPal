@@ -37,6 +37,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiPopup;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,8 +51,8 @@ import java.util.Map;
 public class GroupChatActivity extends AppCompatActivity
 {
     private Toolbar mToolbar;
-    private ImageButton SendMessageButton;
-    private EditText userMessageInput;
+    private ImageButton SendMessageButton, sendEmoji;
+    private EmojiEditText userMessageInput;
     //private ScrollView mScrollView;
     //private TextView displayTextMessages;
 
@@ -82,6 +84,7 @@ public class GroupChatActivity extends AppCompatActivity
         currentGroupName = getIntent().getExtras().get("groupName").toString();
        // Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
         InitializeFields();
+        final EmojiPopup emojiPopup = EmojiPopup.Builder.fromRootView(findViewById(android.R.id.content)).build(userMessageInput);
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
@@ -99,6 +102,14 @@ public class GroupChatActivity extends AppCompatActivity
 
         SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
         saveCurrentTime = currentTime.format(calendar.getTime());
+
+        sendEmoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emojiPopup.toggle();
+                emojiPopup.isShowing();
+            }
+        });
 
 ////get messages
 
@@ -356,6 +367,7 @@ public class GroupChatActivity extends AppCompatActivity
 
         SendMessageButton = findViewById(R.id.send_message_button);
         userMessageInput = findViewById(R.id.input_group_message);
+        sendEmoji = findViewById(R.id.send_emoji_btn);
 //        displayTextMessages = (TextView) findViewById(R.id.group_chat_text_display);
 //        mScrollView = (ScrollView) findViewById(R.id.my_scroll_view);
 

@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,6 +44,10 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.ios.IosEmojiProvider;
 import com.walkerstechbase.openpal.Notification.APIService;
 import com.walkerstechbase.openpal.Notification.Client;
 import com.walkerstechbase.openpal.Notification.Data;
@@ -72,8 +78,8 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference RootRef;
     DatabaseReference reference;
 
-    private ImageButton SendMessageButton, SendFilesButton;
-    private EditText MessageInputText;
+    private ImageButton SendMessageButton, SendFilesButton, sendEmoji;
+    private EmojiEditText MessageInputText;
 
     private final List<Messages> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
@@ -100,6 +106,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
 
+
         mAuth = FirebaseAuth.getInstance();
         messageSenderID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
@@ -111,7 +118,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         IntializeControllers();
-
+        final EmojiPopup emojiPopup = EmojiPopup.Builder.fromRootView(findViewById(android.R.id.content)).build(MessageInputText);
 
         //userName.setText(messageReceiverName);
 
@@ -129,6 +136,14 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+
+        sendEmoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emojiPopup.toggle();
+                emojiPopup.isShowing();
+            }
+        });
 
         DisplayLastSeen();
 
@@ -300,7 +315,8 @@ public class ChatActivity extends AppCompatActivity {
 
         SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
         SendFilesButton = (ImageButton) findViewById(R.id.send_files_btn);
-        MessageInputText = (EditText) findViewById(R.id.input_message);
+        MessageInputText = findViewById(R.id.input_message);
+        sendEmoji = findViewById(R.id.send_emoji_btn);
 
         messageAdapter = new MessageAdapter(messagesList);
         userMessagesList = (RecyclerView) findViewById(R.id.private_messages_list_of_users);
