@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ import java.util.Calendar;
 
 public class PostAJobActivity extends AppCompatActivity {
     EditText postJobTitle, postJobContent;
-    ImageButton postJobBtn;
+    Button postJobBtn;
     String jobTitle, jobContent,saveCurrentDate, postBy , imgUrl;
     Toolbar toolbar;
 

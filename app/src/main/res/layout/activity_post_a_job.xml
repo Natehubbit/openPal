@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostAJobActivity">
+    tools:context=".PostAJobActivity"
+    android:background="@drawable/postbg">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/post_job_toolbar"
@@ -26,17 +27,23 @@
         android:text="Post Job"
         android:textSize="25sp"
         android:gravity="center"
-        android:layout_margin="20dp"/>
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"/>
+
 
     <EditText
         android:id="@+id/post_a_job_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Title"
-        android:layout_margin="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:maxLines="1"
-        android:singleLine="true"
-        android:background="@drawable/student_btn_bg"/>
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/post_a_job_content"
@@ -54,22 +61,23 @@
             android:orientation="horizontal"
             android:padding="20dp"
             android:layout_gravity="end">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Post"
-                android:padding="10dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="Post"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_gravity="center"/>-->
 
-            <ImageButton
+            <Button
                 android:id="@+id/post_job_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_arrowrightsvg"
+                android:layout_height="wrap_content"
+                android:text="POST"
+                android:textColor="@android:color/white"
                 android:background="@drawable/bg_btn_rounded"
-                android:padding="20dp"/>
+                android:padding="0dp"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
