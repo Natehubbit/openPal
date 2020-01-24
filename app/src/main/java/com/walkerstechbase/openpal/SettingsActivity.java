@@ -2,10 +2,12 @@ package com.walkerstechbase.openpal;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.jgabrielfreitas.core.BlurImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -41,13 +45,16 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
 public class SettingsActivity extends AppCompatActivity
 {
-    private ImageButton UpdateAccountSettings;
+    private Button UpdateAccountSettings;
     private EditText userName, userStatus;
     LinearLayout up ;
     ImageButton icon100;
-    private CircleImageView userProfileImage;
+    private ImageView userProfileImage;
+    private BlurImageView blurImgView;
+    private BlurImageView blurImgView2;
 
     private String currentUserID;
     private FirebaseAuth mAuth;
@@ -67,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity
         setContentView(R.layout.activity_settings);
 
 
+
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
@@ -76,11 +84,10 @@ public class SettingsActivity extends AppCompatActivity
         InitializeFields();
 
 
+
         userName.setVisibility(View.INVISIBLE);
         up.setVisibility(View.INVISIBLE);
         icon100.setVisibility(View.INVISIBLE);
-
-
 
         UpdateAccountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,14 +118,16 @@ public class SettingsActivity extends AppCompatActivity
     private void InitializeFields()
     {
         UpdateAccountSettings = findViewById(R.id.update_settings_button);
-        userName = (EditText) findViewById(R.id.set_user_name);
+        userName = findViewById(R.id.set_user_name);
         icon100 = findViewById(R.id.icon100);
         up = findViewById(R.id.upp);
-        userStatus = (EditText) findViewById(R.id.set_profile_status);
-        userProfileImage = (CircleImageView) findViewById(R.id.set_profile_image);
+        userStatus =  findViewById(R.id.set_profile_status);
+        userProfileImage = findViewById(R.id.set_profile_image);
+        blurImgView = findViewById(R.id.blur_img);
+        blurImgView2 = findViewById(R.id.blur_img2);
         loadingBar = new ProgressDialog(this);
 
-        SettingsToolBar = (Toolbar) findViewById(R.id.settings_toolbar);
+        SettingsToolBar = findViewById(R.id.settings_toolbar);
         setSupportActionBar(SettingsToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -275,6 +284,7 @@ public class SettingsActivity extends AppCompatActivity
                             if (retrieveProfileImage.isEmpty()){
                                // Toast.makeText(SettingsActivity.this, "no profile photo", Toast.LENGTH_SHORT).show();
                             }else {
+                                Picasso.get().setIndicatorsEnabled(false);
                                 Picasso.get().load(retrieveProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(userProfileImage, new Callback() {
                                 @Override
                                 public void onSuccess() {
@@ -283,9 +293,41 @@ public class SettingsActivity extends AppCompatActivity
 
                                 @Override
                                 public void onError(Exception e) {
+                                    Picasso.get().setIndicatorsEnabled(false);
                                     Picasso.get().load(retrieveProfileImage).into(userProfileImage);
                                 }
                             });
+
+
+                                blurImgView.setBackground(getResources().getDrawable(R.drawable.bg_profile));
+                                Picasso.get().setIndicatorsEnabled(false);
+                                Picasso.get().load(retrieveProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImgView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        blurImgView.setBlur(25);
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Picasso.get().setIndicatorsEnabled(false);
+                                        Picasso.get().load(retrieveProfileImage).into(blurImgView);
+                                    }
+                                });
+
+                                Picasso.get().setIndicatorsEnabled(false);
+                                Picasso.get().load(retrieveProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImgView2, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        blurImgView2.setBlur(25);
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Picasso.get().setIndicatorsEnabled(false);
+                                        Picasso.get().load(retrieveProfileImage).into(blurImgView2);
+                                    }
+                                });
+
                             }
 
                         }

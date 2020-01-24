@@ -5,15 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
-    android:orientation="vertical"
     android:nestedScrollingEnabled="true">
 
 
-    <include
-        layout="@layout/app_bar_layout"
+<!--    <include-->
+<!--        layout="@layout/app_bar_layout"-->
+<!--        android:id="@+id/settings_toolbar">-->
+<!--    </include>-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:translationZ="0.1dp"
+        app:elevation="0dp">
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/settings_toolbar"
-        >
-    </include>
+        android:background="#00BDBBBB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
 <!--    <de.hdodenhof.circleimageview.CircleImageView-->
 <!--        android:id="@+id/set_profile_image"-->
@@ -30,35 +43,82 @@
 
     <RelativeLayout
         android:id="@+id/set_profile_image1"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="10dp"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp">
-        <de.hdodenhof.circleimageview.CircleImageView
+        android:clipChildren="true">
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
 
-            android:id="@+id/set_profile_image"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/imgplaceholder"
-            android:scaleType="centerCrop"
-            app:strokeColor="@color/colorAccent"
-            app:strokeWidth="1dp"/>
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="#00FFFFFF"
+            app:cardPreventCornerOverlap="false"
+            android:layout_marginBottom="100dp">
+            <com.jgabrielfreitas.core.BlurImageView
+                android:id="@+id/blur_img2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:radius="24"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="30dp"
+            app:cardPreventCornerOverlap="false">
+            <com.jgabrielfreitas.core.BlurImageView
+                android:id="@+id/blur_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:radius="24"
+                android:background="@drawable/bg_profile"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:cardCornerRadius="30dp"
+            app:cardUseCompatPadding="true"
+            app:cardPreventCornerOverlap="false"
+            android:elevation="100dp">
+
+            <ImageView
+                android:id="@+id/set_profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/imgplaceholder"
+                android:scaleType="centerCrop"
+                app:strokeColor="@color/colorAccent"
+                app:strokeWidth="1dp"/>
+        </androidx.cardview.widget.CardView>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_add_a_photo_black_24dp"
-                android:background="@android:color/transparent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"/>
+<!--            <ImageButton-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:src="@drawable/ic_add_a_photo_black_24dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_alignParentEnd="true"/>-->
         </RelativeLayout>
-
     </RelativeLayout>
 
     <LinearLayout
@@ -70,7 +130,8 @@
         android:layout_marginStart="35dp"
         android:layout_marginEnd="35dp"
         android:weightSum="2"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
     <EditText
         android:id="@+id/set_user_name"
         android:layout_width="match_parent"
@@ -129,21 +190,23 @@
         android:padding="20dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:padding="10dp" />
-        <ImageButton
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Update"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:padding="10dp" />-->
+        <Button
             android:id="@+id/update_settings_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="UPDATE"
+            android:textColor="@android:color/white"
             android:background="@drawable/bg_btn_rounded"
             android:src="@drawable/ic_arrowrightsvg"
-            android:padding="20dp"
+            android:padding="0dp"
             android:elevation="20dp"/>
     </LinearLayout>
 

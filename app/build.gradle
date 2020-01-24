@@ -29,6 +29,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+
+        //for image blur
+//        renderscriptTargetApi 22
+//        renderscriptSupportModeEnabled = true
+
         //below is for one signal
         manifestPlaceholders = [
                 onesignal_app_id: '6967acef-2bfe-4117-ae66-2613d8c40681',
@@ -83,6 +88,10 @@ dependencies {
 
     //ios emojis
     implementation 'com.vanniktech:emoji-ios:0.6.0'
+
+    //blur image
+    implementation 'com.github.jgabrielfreitas:BlurImageView:1.0.1'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
