@@ -130,7 +130,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-
                 notify =true;
                 SendMessage();
             }
@@ -241,6 +240,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  Contacts contacts = dataSnapshot.getValue(Contacts.class);
                  if (notify){
+                     Toast.makeText(ChatActivity.this, "Notification sent", Toast.LENGTH_SHORT).show();
                      sendNotification(messageReceiverName, contacts.getName(), msg);
                  }
                  notify = false;
@@ -309,17 +309,17 @@ public class ChatActivity extends AppCompatActivity {
 //        View actionBarView = layoutInflater.inflate(R.layout.app_bar_layout, null);
 //        actionBar.setCustomView(actionBarView);
 
-        userName = (TextView) findViewById(R.id.custom_profile_name);
-        userLastSeen = (TextView) findViewById(R.id.custom_user_last_seen);
-        userImage = (CircleImageView) findViewById(R.id.custom_profile_image);
+        userName =  findViewById(R.id.custom_profile_name);
+        userLastSeen =  findViewById(R.id.custom_user_last_seen);
+        userImage = findViewById(R.id.custom_profile_image);
 
-        SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
-        SendFilesButton = (ImageButton) findViewById(R.id.send_files_btn);
+        SendMessageButton =  findViewById(R.id.send_message_btn);
+        SendFilesButton = findViewById(R.id.send_files_btn);
         MessageInputText = findViewById(R.id.input_message);
         sendEmoji = findViewById(R.id.send_emoji_btn);
 
         messageAdapter = new MessageAdapter(messagesList);
-        userMessagesList = (RecyclerView) findViewById(R.id.private_messages_list_of_users);
+        userMessagesList = findViewById(R.id.private_messages_list_of_users);
         linearLayoutManager = new LinearLayoutManager(this);
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messageAdapter);
