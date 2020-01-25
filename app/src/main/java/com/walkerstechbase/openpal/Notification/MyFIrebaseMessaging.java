@@ -22,12 +22,12 @@ import com.walkerstechbase.openpal.ChatActivity;
 
 public class MyFIrebaseMessaging extends FirebaseMessagingService {
 
+
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
 //        String refreshToken = s;
         String refreshToken = FirebaseInstanceId.getInstance().getToken();
         if (firebaseUser != null){

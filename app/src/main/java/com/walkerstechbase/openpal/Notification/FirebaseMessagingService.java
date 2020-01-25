@@ -22,8 +22,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.walkerstechbase.openpal.ChatActivity;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
-    public FirebaseMessagingService() {
-    }
+//    public FirebaseMessagingService() {
+//    }
 
 
     @Override

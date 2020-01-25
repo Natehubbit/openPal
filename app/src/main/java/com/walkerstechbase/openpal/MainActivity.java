@@ -16,6 +16,7 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,6 +61,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //dndBLyf7ViQ:APA91bHB37i2rkxkW1OPZaYzv7gXmohvBgYDhW1prJ-_B6veunXSiD23utp0aDwmlpbNZ0O3hCSeQMZl1Nl7hCc-3Ly6BUlZf-j1ug6p6tM_hKsUHPOhwV8aDh9VzWP-YhBkR2r5jxY0
+
+        //token for sending to specific device
+        //for sending to all device using own server code subscribe your app to one topic
+        Log.d("TOken ",""+ FirebaseInstanceId.getInstance().getToken());
+        FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
 
 
         mAuth = FirebaseAuth.getInstance();
