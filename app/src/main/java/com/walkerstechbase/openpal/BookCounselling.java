@@ -45,10 +45,11 @@ public class BookCounselling extends AppCompatActivity {
     TextView dateTV, timeTV;
     EditText userName, userPhone;
     final Calendar myCalendar = Calendar.getInstance();
-    String date, time, name, phone;
+    private String date, time, name, phone, counselMessage;
     Toolbar toolbar;
     DatabaseReference counselsRef;
     private ProgressDialog loadingBar;
+    EditText bookCounselMessageET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,12 +114,14 @@ public class BookCounselling extends AppCompatActivity {
                     date = dateTV.getText().toString();
                     phone = userPhone.getText().toString();
                     name = userName.getText().toString();
+                    counselMessage = bookCounselMessageET.getText().toString();
 
                     Counsel counsel = new Counsel();
                     counsel.setTime(time);
                     counsel.setDate(date);
                     counsel.setPhoneNumber(phone);
                     counsel.setName(name);
+                    counsel.setMessage(counselMessage);
 
                     counselsRef.push().setValue(counsel).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -197,6 +200,7 @@ public class BookCounselling extends AppCompatActivity {
         userName = findViewById(R.id.book_counselling_name);
         userPhone = findViewById(R.id.book_counselling_phone_number);
         toolbar = findViewById(R.id.book_counselling_toolbar);
+        bookCounselMessageET = findViewById(R.id.book_counsel_message);
 
         loadingBar = new ProgressDialog(this);
     }

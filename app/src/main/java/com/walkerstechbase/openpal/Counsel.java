@@ -1,7 +1,7 @@
 package com.walkerstechbase.openpal;
 
 public class Counsel {
-    private String name, date, time, phoneNumber;
+    private String name, date, time, phoneNumber, message;
 
     public String getName() {
         return name;
@@ -33,5 +33,13 @@ public class Counsel {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

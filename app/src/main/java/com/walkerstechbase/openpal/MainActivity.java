@@ -360,11 +360,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
             SendUserToSettingsActivity();
         }
-//        if (id == R.id.main_create_group_option)
-//        {
-//            //startActivity(new Intent(MainActivity.this, FindUser2.class));
+        if (id == R.id.counsels)
+        {
+            startActivity(new Intent(MainActivity.this, CounsellingActivity.class));
 //            RequestNewGroup();
-//        }
+        }
         if (id == R.id.main_find_friends_option)
         {
             //close drawer

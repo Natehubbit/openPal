@@ -1,25 +1,21 @@
 package com.walkerstechbase.openpal;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,23 +25,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class CounsellingActivity extends AppCompatActivity {
     //Adapter ArrayLists
-    List<Counsellor> listItems;
-    List<Counsellor> listKeys;
+    List<Counsel> listItems;
+    List<Counsel> listKeys;
     RecyclerView recyclerView;
     //CourseCodeAdapter adapter;
     private Boolean itemSelected = false;
     private int selectedPosition = 0;
 
     //CounsellorsAdapter adapter;
-    Counsellor counsellor;
+    Counsel counsel;
     //private RecyclerView FirebaseRecyclerView;
     private LinearLayoutManager linearLayoutManager;
    // private CounsellorsAdapter coursecodeAdapter;
-    String name, id;
+    private String name, date, time, number, message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,46 +57,68 @@ public class CounsellingActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("counsellors");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Counsels");
         Query query = ref;
-        FirebaseRecyclerOptions<Counsellor> options =
-                new FirebaseRecyclerOptions.Builder<Counsellor>()
-                        .setQuery(query, Counsellor.class)
+        FirebaseRecyclerOptions<Counsel> options =
+                new FirebaseRecyclerOptions.Builder<Counsel>()
+                        .setQuery(query, Counsel.class)
                         .setLifecycleOwner(this)
                         .build();
 
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Counsellor, CounsellorViewHolder>(options) {
+        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Counsel, CounselViewHolder>(options) {
 
 
             @NonNull
             @Override
-            public CounsellorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LinearLayout.inflate(getApplicationContext(), R.layout.counsellor_list, null);
-                return new CounsellorViewHolder(view);
+            public CounselViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                View view = LinearLayout.inflate(getApplicationContext(), R.layout.counsel_list, parent);
+                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.counsel_list, parent, false);
+
+                return new CounselViewHolder(view);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull CounsellorViewHolder counsellorViewHolder, int i, @NonNull Counsellor counsellor) {
+            protected void onBindViewHolder(@NonNull CounselViewHolder counselViewHolder, int i, @NonNull Counsel counsel) {
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         for (DataSnapshot childsnap : dataSnapshot.getChildren()){
 
-//                            Toast.makeText(getApplicationContext(), "jj " + childsnap.child("counsellorName").getValue().toString(), Toast.LENGTH_SHORT).show();
-                            name = counsellor.getCounsellorName();
-                            id = counsellor.getCounsellorID();
+                            name = counsel.getName();
+                            date = counsel.getDate();
+                            time = counsel.getTime();
+                            number = counsel.getPhoneNumber();
+                            message = counsel.getMessage();
 
-                            counsellorViewHolder.counsellorName.setText(name);
+                            //make message field invisible if message is null
+                            if (message == null){
+                                counselViewHolder.message.setVisibility(View.GONE);
+                            }
+
+                            counselViewHolder.name.setText(name);
+                            counselViewHolder.date.setText(String.format("Date : %s", date));
+                            counselViewHolder.time.setText(String.format("Time : %s",time));
+                            counselViewHolder.number.setText(String.format("Phone : %s" , number));
+                            counselViewHolder.message.setText(String.format("Reason : %s", message));
+
                         }
 
-                        counsellorViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        counselViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(getApplicationContext(), "counsellor "+ id, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(new Intent(getApplicationContext(), BookCounselling.class));
-                                intent.putExtra("counsellor_id",id);
-                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "name "+ name, Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(new Intent(getApplicationContext(), BookCounselling.class));
+//                                intent.putExtra("counsellor_id",id);
+//                                startActivity(intent);
+                            }
+                        });
+
+                        counselViewHolder.lottieAnimationView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                counselViewHolder.lottieObj.playAnimation();
+                                counselViewHolder.accept.setText("Accepted");
                             }
                         });
                     }
@@ -144,14 +161,6 @@ recyclerView.setAdapter(adapter);
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //below code takes data from DB
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-
-
-                    //for(Counsellor mContactIterator : childSnapshot){
-                      //  if(childSnapshot.getValue().equals(.getName())){
-                            counsellor.setCounsellorName("Mr Qyansah");
-                     //   }
-                   // }
-
 
                     return;
 
