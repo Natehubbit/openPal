@@ -22,7 +22,7 @@
         android:icon="@drawable/ic_work_black_24dp"/>
 
     <item
-        android:id="@+id/main_counselling_session"
+        android:id="@+id/main_book_counselling_session"
         android:title="Counselling Session"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_handshake"/>

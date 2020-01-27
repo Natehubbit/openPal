@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BookCounselling">
+
+        <include
+            layout="@layout/app_bar_layout"
+            android:id="@+id/book_counselling_toolbar">
+        </include>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -190,21 +196,23 @@
             android:orientation="horizontal"
             android:layout_gravity="end"
             android:padding="20dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="BOOK"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:padding="10dp"/>
-            <ImageButton
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="BOOK"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:padding="10dp"/>-->
+            <Button
                 android:id="@+id/book_counselling_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_btn_rounded"
                 android:src="@drawable/ic_arrowrightsvg"
-                android:padding="20dp"
+                android:text="Book"
+                android:textColor="@android:color/white"
+                android:padding="0dp"
                 android:elevation="20dp"/>
         </LinearLayout>
     </LinearLayout>

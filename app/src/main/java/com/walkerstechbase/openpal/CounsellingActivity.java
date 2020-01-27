@@ -166,7 +166,4 @@ recyclerView.setAdapter(adapter);
 
     }
 
-    private void getCounsellorDetails() {
-
-    }
 }

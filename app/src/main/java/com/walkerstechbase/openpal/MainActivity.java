@@ -286,8 +286,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     }
 
 
-    private void SendUserToCounsellingActivity(){
-        Intent intent = new Intent(MainActivity.this, CounsellingActivity.class);
+    private void SendUserToBooKCounsellingActivity(){
+        Intent intent = new Intent(MainActivity.this, BookCounselling.class);
         startActivity(intent);
     }
 
@@ -372,11 +372,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
             SendUserToFindFriendsActivity();
         }
-        if(id == R.id.main_counselling_session){
+        if(id == R.id.main_book_counselling_session){
             //close drawer
             drawerLayout.closeDrawer(GravityCompat.START);
 
-            SendUserToCounsellingActivity();
+            SendUserToBooKCounsellingActivity();
         }
         if (id == R.id.main_job_postings){
             //close drawer
