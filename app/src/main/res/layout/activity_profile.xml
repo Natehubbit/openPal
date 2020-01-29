@@ -7,22 +7,124 @@
     android:background="@android:color/white"
     tools:context=".ProfileActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/visit_profile_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:translationZ="0.1dp"
+        app:elevation="0dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/profile_toolbar"
+            android:background="#00BDBBBB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/set_profile_image2"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
-        android:src="@drawable/imgplaceholder"
-        />
+        android:clipChildren="true">
+        <!--        <de.hdodenhof.circleimageview.CircleImageView-->
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="#00FFFFFF"
+            app:cardPreventCornerOverlap="false"
+            android:layout_marginBottom="100dp">
+            <com.jgabrielfreitas.core.BlurImageView
+                android:id="@+id/blur_img4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:radius="24"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="30dp"
+            app:cardPreventCornerOverlap="false">
+            <com.jgabrielfreitas.core.BlurImageView
+                android:id="@+id/blur_img3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:radius="24"
+                android:background="@drawable/bg_profile"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:cardCornerRadius="30dp"
+            app:cardUseCompatPadding="true"
+            app:cardPreventCornerOverlap="false"
+            android:elevation="100dp">
+
+            <ImageView
+                android:id="@+id/set_profile_image4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/imgplaceholder"
+                android:scaleType="centerCrop"
+                app:strokeColor="@color/colorAccent"
+                app:strokeWidth="1dp"/>
+        </androidx.cardview.widget.CardView>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--            <ImageButton-->
+            <!--                android:layout_width="30dp"-->
+            <!--                android:layout_height="30dp"-->
+            <!--                android:src="@drawable/ic_add_a_photo_black_24dp"-->
+            <!--                android:background="@android:color/transparent"-->
+            <!--                android:layout_alignParentBottom="true"-->
+            <!--                android:layout_alignParentEnd="true"/>-->
+        </RelativeLayout>
+    </RelativeLayout>
+
+<!--    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--        android:id="@+id/visit_profile_image"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="110dp"-->
+<!--        android:src="@drawable/imgplaceholder"-->
+<!--        />-->
 
     <TextView
         android:id="@+id/visit_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="user name"
-        android:layout_below="@+id/visit_profile_image"
+        android:layout_below="@+id/set_profile_image2"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
@@ -57,104 +159,76 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true">
-        <!--    <Button-->
-        <!--        android:id="@+id/send_message_request_button"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_below="@+id/visit_profile_status"-->
-        <!--        android:layout_marginTop="15dp"-->
-        <!--        android:layout_marginLeft="65dp"-->
-        <!--        android:layout_marginRight="65dp"-->
-        <!--        android:textColor="@android:color/background_light"-->
-        <!--        android:background="@color/colorPrimaryDark"-->
-        <!--        android:textStyle="bold"-->
-        <!--        android:textSize="20sp"-->
-        <!--        android:text="Send Message"-->
-        <!--        android:textAllCaps="false"-->
-        <!--        />-->
-        <LinearLayout
-            android:id="@+id/send_msg_lay"
-            android:layout_below="@+id/visit_profile_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentEnd="true"
-            android:padding="10dp">
-            <TextView
-                android:id="@+id/just_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Send A Message"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                />
-            <ImageButton
-                android:id="@+id/send_message_request_button"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_paper_plane"
-                android:paddingEnd="10dp"
-                android:paddingStart="0dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:elevation="20dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
-        </LinearLayout>
 
-
-        <!--    <Button-->
-        <!--        android:id="@+id/decline_message_request_button"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_below="@+id/send_msg_lay"-->
-        <!--        android:layout_marginTop="6dp"-->
-        <!--        android:layout_marginLeft="65dp"-->
-        <!--        android:layout_marginRight="65dp"-->
-        <!--        android:textColor="@android:color/background_light"-->
-        <!--        android:background="@color/colorPrimaryDark"-->
-        <!--        android:textStyle="bold"-->
-        <!--        android:textSize="20sp"-->
-        <!--        android:text="Cancel Chat Request"-->
-        <!--        android:textAllCaps="false"-->
-        <!--        android:visibility="invisible"-->
-        <!--        />-->
-        <LinearLayout
-            android:id="@+id/decline_msg_lay"
-            android:layout_below="@+id/send_msg_lay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentEnd="true"
-            android:padding="10dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/just_text_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Decline Chat Request"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:padding="10dp"/>
-            <ImageButton
-                android:id="@+id/decline_message_request_button"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_negative_vote"
-                android:backgroundTint="@color/colorAccent"
-                android:paddingEnd="10dp"
-                android:paddingStart="0dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:elevation="20dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
-        </LinearLayout>
     </LinearLayout>
+            <LinearLayout
+                android:id="@+id/decline_msg_lay"
+                android:layout_below="@+id/send_msg_lay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/just_text_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Decline Chat Request"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:padding="10dp"/>
+                <ImageButton
+                    android:id="@+id/decline_message_request_button"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_negative_vote"
+                    android:backgroundTint="@color/colorAccent"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:elevation="20dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/send_msg_lay"
+                android:layout_below="@+id/visit_profile_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp">
+                <TextView
+                    android:id="@+id/just_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Send A Message"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    />
+                <ImageButton
+                    android:id="@+id/send_message_request_button"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_paper_plane"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:elevation="20dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

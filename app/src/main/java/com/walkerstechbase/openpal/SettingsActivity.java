@@ -43,7 +43,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class SettingsActivity extends AppCompatActivity

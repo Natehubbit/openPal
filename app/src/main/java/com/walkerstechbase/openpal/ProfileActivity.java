@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jgabrielfreitas.core.BlurImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -31,7 +34,9 @@ public class ProfileActivity extends AppCompatActivity
 {
     private String receiverUserID, senderUserID, Current_State;
 
-    private CircleImageView userProfileImage;
+    private BlurImageView blurImageView;
+    private BlurImageView blurImageView2;
+    private ImageView userProfileImage;
     private TextView userProfileName, userProfileStatus;
     private ImageButton DeclineMessageRequestButton;
     private ImageButton SendMessageRequestButton;
@@ -41,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity
     private DatabaseReference UserRef, ChatRequestRef, ContactsRef, NotificationRef;
     private FirebaseAuth mAuth;
 
+    private Toolbar profileToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,9 +66,11 @@ public class ProfileActivity extends AppCompatActivity
         senderUserID = mAuth.getCurrentUser().getUid();
 
 
-        userProfileImage = (CircleImageView) findViewById(R.id.visit_profile_image);
-        userProfileName = (TextView) findViewById(R.id.visit_user_name);
-        userProfileStatus = (TextView) findViewById(R.id.visit_profile_status);
+        blurImageView = findViewById(R.id.blur_img3);
+        blurImageView2 = findViewById(R.id.blur_img4);
+        userProfileImage = findViewById(R.id.set_profile_image4);
+        userProfileName =  findViewById(R.id.visit_user_name);
+        userProfileStatus = findViewById(R.id.visit_profile_status);
         SendMessageRequestButton = findViewById(R.id.send_message_request_button);
         DeclineMessageRequestButton = findViewById(R.id.decline_message_request_button);
         justText = findViewById(R.id.just_text);
@@ -71,8 +79,15 @@ public class ProfileActivity extends AppCompatActivity
         sendMsgLay = findViewById(R.id.send_msg_lay);
         Current_State = "new";
 
+        profileToolBar = findViewById(R.id.profile_toolbar);
+        setSupportActionBar(profileToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("");
 
         RetrieveUserInfo();
+
+
     }
 
 
@@ -103,6 +118,35 @@ public class ProfileActivity extends AppCompatActivity
                     userProfileName.setText(userName);
                     userProfileStatus.setText(userstatus);
 
+                    blurImageView.setBackground(getResources().getDrawable(R.drawable.bg_profile));
+                    Picasso.get().setIndicatorsEnabled(false);
+                    Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            blurImageView.setBlur(25);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().setIndicatorsEnabled(false);
+                            Picasso.get().load(userImage).into(blurImageView);
+                        }
+                    });
+
+
+                    Picasso.get().setIndicatorsEnabled(false);
+                    Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImageView2, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            blurImageView2.setBlur(25);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().setIndicatorsEnabled(false);
+                            Picasso.get().load(userImage).into(blurImageView2);
+                        }
+                    });
 
                     ManageChatRequests();
                 }
