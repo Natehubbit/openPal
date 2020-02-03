@@ -27,11 +27,11 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_handshake"/>
 
-    <item
-        android:id="@+id/counsels"
-        android:title="Available Counsels"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_contract"/>
+<!--    <item-->
+<!--        android:id="@+id/counsels"-->
+<!--        android:title="Available Counsels"-->
+<!--        app:showAsAction="ifRoom"-->
+<!--        android:icon="@drawable/ic_contract"/>-->
 
     <item
         android:id="@+id/main_settings_option"

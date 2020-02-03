@@ -24,8 +24,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.walkerstechbase.openpal.General.SIgnUserOut;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,6 +43,7 @@ import java.util.Map;
 public class BookCounselling extends AppCompatActivity {
     Button bookCounsellingBtn;
     DatabaseReference ContactsRef;
+    DatabaseReference userRef;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
 //    private String receiverUserID;
@@ -43,9 +51,9 @@ public class BookCounselling extends AppCompatActivity {
     private String saveCurrentTime, saveCurrentDate;
 
     TextView dateTV, timeTV;
-    EditText userName, userPhone;
+    EditText  userPhone;
     final Calendar myCalendar = Calendar.getInstance();
-    private String date, time, name, phone, counselMessage;
+    private String date, time, name, phone, counselMessage, userId;
     Toolbar toolbar;
     DatabaseReference counselsRef;
     private ProgressDialog loadingBar;
@@ -93,19 +101,24 @@ public class BookCounselling extends AppCompatActivity {
 
         ContactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
         counselsRef = FirebaseDatabase.getInstance().getReference().child("Counsels");
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        //retrieving user details before user books a counsel
+        RetrieveUserInfo();
 
         bookCounsellingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (userName.length() < 1){
-                    userName.setError("Please provide your name");
-                }else if (userPhone.length() < 10){
+//                if (userName.length() < 1){
+//                    userName.setError("Please provide your name");
+//                }
+                if (userPhone.length() < 10){
                     userPhone.setError("Phone is invalid");
                 }else if(dateTV.getText() == null){
                     Toast.makeText(BookCounselling.this, "Define a date", Toast.LENGTH_SHORT).show();
                 }else if (timeTV == null){
                     Toast.makeText(BookCounselling.this, "Define a time", Toast.LENGTH_SHORT).show();
-                }else if (userName!=null && userPhone.length() > 9 && dateTV != null && timeTV != null){
+                }else if (userPhone.length() > 9 && dateTV != null && timeTV != null){
                     loadingBar.setMessage("Booking...");
                     loadingBar.setCanceledOnTouchOutside(false);
                     loadingBar.show();
@@ -113,7 +126,7 @@ public class BookCounselling extends AppCompatActivity {
                     time = timeTV.getText().toString();
                     date = dateTV.getText().toString();
                     phone = userPhone.getText().toString();
-                    name = userName.getText().toString();
+//                    name = userName.getText().toString();
                     counselMessage = bookCounselMessageET.getText().toString();
 
                     Counsel counsel = new Counsel();
@@ -122,6 +135,7 @@ public class BookCounselling extends AppCompatActivity {
                     counsel.setPhoneNumber(phone);
                     counsel.setName(name);
                     counsel.setMessage(counselMessage);
+                    counsel.setUserID(userId);
 
                     counselsRef.push().setValue(counsel).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -197,7 +211,7 @@ public class BookCounselling extends AppCompatActivity {
         bookCounsellingBtn = findViewById(R.id.book_counselling_btn);
         dateTV = findViewById(R.id.book_counselling_date);
         timeTV = findViewById(R.id.book_counselling_time);
-        userName = findViewById(R.id.book_counselling_name);
+//        userName = findViewById(R.id.book_counselling_name);
         userPhone = findViewById(R.id.book_counselling_phone_number);
         toolbar = findViewById(R.id.book_counselling_toolbar);
         bookCounselMessageET = findViewById(R.id.book_counsel_message);
@@ -268,5 +282,35 @@ public class BookCounselling extends AppCompatActivity {
 //                }
 //            });
 //        }
+    }
+
+    private void RetrieveUserInfo()
+    {
+        userRef.child(senderUserID)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name") && (dataSnapshot.hasChild("image"))))
+                        {
+                            //setting fields to be included in the book counselling request
+                            name = dataSnapshot.child("name").getValue().toString();
+                            userId = dataSnapshot.child("uid").getValue().toString();
+
+
+                        }
+                        else
+                        {
+                            //write logic to sign user out
+                            SIgnUserOut sIgnUserOut = new SIgnUserOut();
+                            sIgnUserOut.signOut();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

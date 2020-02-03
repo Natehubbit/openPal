@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    MenuItem availableCounsels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
         myTabLayout.setupWithViewPager(myViewPager);
+
+        invalidateOptionsMenu();
     }
 
 
@@ -120,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         else
         {
+            //updating the user's status to be online
             updateUserStatus("online");
 
             VerifyUserExistance();
@@ -169,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 {
                     SendUserToSettingsActivity();
                 }
+
             }
 
             @Override
@@ -183,9 +189,32 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        super.onCreateOptionsMenu(menu);
+//        super.onCreateOptionsMenu(menu);
 
         getMenuInflater().inflate(R.menu.small_menu, menu);
+        availableCounsels = menu.findItem(R.id.main_available_counsels);
+//        availableCounsels.setVisible(true);
+
+        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if ((dataSnapshot.child("counsellor").exists()))
+                {
+                    availableCounsels.setVisible(true);
+                }
+                else
+                {
+                    availableCounsels.setVisible(false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         return true;
     }
@@ -196,9 +225,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     {
         super.onOptionsItemSelected(item);
 
-        if (item.getItemId() == R.id.main_find_friends_option)
+        if (item.getItemId() == R.id.main_available_counsels)
         {
-            SendUserToFindFriendsActivity();
+            startActivity(new Intent(MainActivity.this, CounsellingActivity.class));
+//            SendUserToFindFriendsActivity();
         }
 
         return true;
@@ -360,11 +390,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
             SendUserToSettingsActivity();
         }
-        if (id == R.id.counsels)
-        {
-            startActivity(new Intent(MainActivity.this, CounsellingActivity.class));
-//            RequestNewGroup();
-        }
+//        if (id == R.id.counsels)
+//        {
+//            startActivity(new Intent(MainActivity.this, CounsellingActivity.class));
+////            RequestNewGroup();
+//        }
         if (id == R.id.main_find_friends_option)
         {
             //close drawer
@@ -386,4 +416,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
         return true;
     }
+
+
 }

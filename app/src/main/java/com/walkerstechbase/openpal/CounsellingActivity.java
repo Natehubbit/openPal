@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,10 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,8 +28,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CounsellingActivity extends AppCompatActivity {
     //Adapter ArrayLists
@@ -40,7 +49,15 @@ public class CounsellingActivity extends AppCompatActivity {
     //private RecyclerView FirebaseRecyclerView;
     private LinearLayoutManager linearLayoutManager;
    // private CounsellorsAdapter coursecodeAdapter;
-    private String name, date, time, number, message;
+    private String name, date, time, number, message, receiverId;
+    DatabaseReference Rootref;
+    DatabaseReference ContactsRef;
+    DatabaseReference counselRef;
+    private String  senderUserID;
+    private FirebaseAuth mAuth;
+    private String saveCurrentTime, saveCurrentDate;
+    String counselKeyID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +69,23 @@ public class CounsellingActivity extends AppCompatActivity {
 
         listItems = new ArrayList<>();
         listKeys = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Rootref = FirebaseDatabase.getInstance().getReference();
+        ContactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
+        senderUserID = mAuth.getCurrentUser().getUid();
 
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Calendar calendar = Calendar.getInstance();
 
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Counsels");
-        Query query = ref;
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
+        counselRef = FirebaseDatabase.getInstance().getReference().child("Counsels");
+        Query query = counselRef;
         FirebaseRecyclerOptions<Counsel> options =
                 new FirebaseRecyclerOptions.Builder<Counsel>()
                         .setQuery(query, Counsel.class)
@@ -79,7 +106,7 @@ public class CounsellingActivity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull CounselViewHolder counselViewHolder, int i, @NonNull Counsel counsel) {
-                ref.addValueEventListener(new ValueEventListener() {
+                counselRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -90,6 +117,8 @@ public class CounsellingActivity extends AppCompatActivity {
                             time = counsel.getTime();
                             number = counsel.getPhoneNumber();
                             message = counsel.getMessage();
+                            receiverId = counsel.getUserID();
+
 
                             //make message field invisible if message is null
                             if (message == null){
@@ -107,7 +136,11 @@ public class CounsellingActivity extends AppCompatActivity {
                         counselViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(getApplicationContext(), "name "+ name, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Click Accept to counsel user", Toast.LENGTH_SHORT).show();
+
+
+                                //getting the ID for the clicked item to be deleted after counsellor accepts
+                                counselKeyID = getRef(counselViewHolder.getAdapterPosition()).getKey();
 //                                Intent intent = new Intent(new Intent(getApplicationContext(), BookCounselling.class));
 //                                intent.putExtra("counsellor_id",id);
 //                                startActivity(intent);
@@ -117,8 +150,26 @@ public class CounsellingActivity extends AppCompatActivity {
                         counselViewHolder.lottieAnimationView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
+                                //getting the ID for the clicked item to be deleted after counsellor accepts
+                                counselKeyID = getRef(counselViewHolder.getAdapterPosition()).getKey();
+
+                                //animate lottie item
                                 counselViewHolder.lottieObj.playAnimation();
+
+                                //setting textView to "accepted"
                                 counselViewHolder.accept.setText("Accepted");
+
+                                //automatically saving number and sending message to user who booked counselling session
+                                ContactsRef.child(senderUserID).child(receiverId)
+                                .child("Contacts").setValue("Saved")
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    SendMessage();
+                                }
+                            });
+
                             }
                         });
                     }
@@ -173,6 +224,58 @@ recyclerView.setAdapter(adapter);
             }
         });
 
+    }
+
+    private void SendMessage()
+    {
+        String messageText = "Hello, " + name + "! I have accepted to counsel you over your issue '" + message + "'";
+
+        if (TextUtils.isEmpty(messageText))
+        {
+            Toast.makeText(this, "first write your message...", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            String messageSenderRef = "Messages/" + senderUserID + "/" + receiverId;
+            String messageReceiverRef = "Messages/" + receiverId + "/" + senderUserID;
+
+            DatabaseReference userMessageKeyRef = Rootref.child("Messages")
+                    .child(senderUserID).child(receiverId).push();
+
+            String messagePushID = userMessageKeyRef.getKey();
+
+            Map messageTextBody = new HashMap();
+            messageTextBody.put("message", messageText);
+            messageTextBody.put("type", "text");
+            messageTextBody.put("from", senderUserID);
+            messageTextBody.put("to", receiverId);
+            messageTextBody.put("messageID", messagePushID);
+            messageTextBody.put("time", saveCurrentTime);
+            messageTextBody.put("date", saveCurrentDate);
+
+            Map messageBodyDetails = new HashMap();
+            messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
+            messageBodyDetails.put( messageReceiverRef + "/" + messagePushID, messageTextBody);
+
+            Rootref.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        Toast.makeText(CounsellingActivity.this, "Message Sent Successfully...", Toast.LENGTH_SHORT).show();
+
+                        //Deleting accepted bookings from the list
+                        counselRef.child(counselKeyID).removeValue();
+                    }
+                    else
+                    {
+                        Toast.makeText(CounsellingActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }
     }
 
 }

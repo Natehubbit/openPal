@@ -49,38 +49,38 @@
 <!--                    android:textSize="30sp"-->
 <!--                    android:textStyle="bold" />-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal"
-                    android:weightSum="5">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="55dp"-->
+<!--                    android:layout_marginStart="20dp"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:layout_marginEnd="20dp"-->
+<!--                    android:layout_marginBottom="5dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:weightSum="5">-->
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="4.2"
-                        android:background="@drawable/bg_icon_left"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_person_black_24dp" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_marginEnd="5dp"-->
+<!--                        android:layout_weight="4.2"-->
+<!--                        android:background="@drawable/bg_icon_left"-->
+<!--                        android:padding="10dp"-->
+<!--                        android:src="@drawable/ic_person_black_24dp" />-->
 
-                    <EditText
-                        android:id="@+id/book_counselling_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/student_btn_bg"
-                        android:hint="Name"
-                        android:inputType="text"
-                        android:padding="10dp"
-                        android:textColor="@color/colorAccent"
-                        android:textColorHint="@color/colorAccent" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/book_counselling_name"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0.8"-->
+<!--                        android:background="@drawable/student_btn_bg"-->
+<!--                        android:hint="Name"-->
+<!--                        android:inputType="text"-->
+<!--                        android:padding="10dp"-->
+<!--                        android:textColor="@color/colorAccent"-->
+<!--                        android:textColorHint="@color/colorAccent" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
