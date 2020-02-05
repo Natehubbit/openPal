@@ -15,10 +15,11 @@
         android:roundIcon="@drawable/logopen"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".Notification.GettingDeviceTokenService">
+        <activity android:name=".AddGroupMembers"></activity>
+
+        <service android:name=".Notification.GettingDeviceTokenService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service

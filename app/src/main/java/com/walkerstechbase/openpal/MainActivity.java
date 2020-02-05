@@ -1,5 +1,6 @@
 package com.walkerstechbase.openpal;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -22,9 +23,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +45,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener
 {
@@ -51,12 +57,14 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
-    private DatabaseReference RootRef;
+    private DatabaseReference RootRef, groupRef;
     private String currentUserID;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     MenuItem availableCounsels;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         currentUser = mAuth.getCurrentUser();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
+
 
 
         mToolbar = findViewById(R.id.main_page_toolbar);
@@ -413,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             drawerLayout.closeDrawer(GravityCompat.START);
 
             startActivity(new Intent(MainActivity.this, JobPostings.class));
+
         }
         return true;
     }

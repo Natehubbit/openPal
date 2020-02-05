@@ -40,7 +40,7 @@ public class FindFriendsActivity extends AppCompatActivity
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
-        FindFriendsRecyclerList = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
+        FindFriendsRecyclerList = findViewById(R.id.find_friends_recycler_list);
         FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
 
