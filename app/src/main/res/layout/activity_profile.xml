@@ -127,10 +127,10 @@
         android:layout_below="@+id/set_profile_image2"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="30dp"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="18sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         />
 
@@ -146,8 +146,9 @@
         android:layout_marginTop="25dp"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textStyle="normal"
+
         />
 
 
@@ -163,7 +164,6 @@
     </LinearLayout>
             <LinearLayout
                 android:id="@+id/decline_msg_lay"
-                android:layout_below="@+id/send_msg_lay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -195,40 +195,40 @@
                     android:scaleType="fitCenter"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/send_msg_lay"
-                android:layout_below="@+id/visit_profile_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp">
-                <TextView
-                    android:id="@+id/just_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Send A Message"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:padding="10dp"
-                    />
-                <ImageButton
-                    android:id="@+id/send_message_request_button"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_paper_plane"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="0dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:elevation="20dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"/>
-            </LinearLayout>
+
 
         </RelativeLayout>
     </ScrollView>
-
+    <LinearLayout
+        android:id="@+id/send_msg_lay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/just_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send A Message"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            />
+        <ImageButton
+            android:id="@+id/send_message_request_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_paper_plane"
+            android:paddingEnd="10dp"
+            android:paddingStart="0dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:elevation="20dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"/>
+    </LinearLayout>
 </RelativeLayout>

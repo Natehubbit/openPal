@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.walkerstechbase.openpal.General.Constansts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class AddGroupMembers extends AppCompatActivity {
     private RecyclerView FindFriendsRecyclerList;
     private DatabaseReference UsersRef, memberRef, groupRef;
     private ArrayList<UserObject> members;
+    private ArrayList userGroupList;
     FloatingActionButton addMembersFab;
 
     int getTotalContactList = 0;
@@ -60,10 +62,11 @@ public class AddGroupMembers extends AppCompatActivity {
 
 
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        groupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
+        groupRef = FirebaseDatabase.getInstance().getReference().child(Constansts.GROUP_REF);
         memberRef = groupRef.child(intentGroupID).child("members");
 
         members = new ArrayList<>();
+        userGroupList = new ArrayList();
 
         addMembersFab = findViewById(R.id.add_members_fab);
         FindFriendsRecyclerList = findViewById(R.id.add_members_recycler_list);
@@ -132,9 +135,18 @@ public class AddGroupMembers extends AppCompatActivity {
                                 //showing progress dialog
                                 progressDialog.show();
 
+                                //Adding group id to user node to tell the groups the user belongs to
+                                //this is outside of tho for loop to prevent the group id from posting multiple times
+                                userGroupList.add(intentGroupID);
+
                                 //looping through array list and pushing to database
                                 for (int j = 0; j < members.size(); j++){
                                     Log.d("AddGroupMembers : " , members.get(j).getName());
+//
+                                    //getting user id of selected users
+                                    String usersId = members.get(j).getUid();
+                                    UsersRef.child(usersId).child("userGroups").push().setValue(userGroupList);
+
 
                                     //pushing the member list to database
                                     memberRef.setValue(members).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -143,6 +155,7 @@ public class AddGroupMembers extends AppCompatActivity {
                                             //dismissing progress dialog
                                             progressDialog.dismiss();
                                             Toast.makeText(getApplicationContext(), "Group created successfully", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(AddGroupMembers.this, MainActivity.class));
                                             finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {

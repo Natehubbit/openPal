@@ -41,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.walkerstechbase.openpal.General.Constansts;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
-    private DatabaseReference RootRef, groupRef;
+    private DatabaseReference RootRef, generealGroupRef;
     private String currentUserID;
 
     DrawerLayout drawerLayout;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         currentUser = mAuth.getCurrentUser();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
+        generealGroupRef = RootRef.child(Constansts.GENERAL_CHAT_ROOM_REF);
 
 
 
@@ -247,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private void RequestNewGroup()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Enter Group Name :");
+        builder.setTitle("Enter Groupie Name :");
 
         final EditText groupNameField = new EditText(MainActivity.this);
         groupNameField.setBackground(getResources().getDrawable(R.color.colorAccent));
@@ -264,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
                 if (TextUtils.isEmpty(groupName))
                 {
-                    Toast.makeText(MainActivity.this, "Please write Group Name...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please write Groupie Name...", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -288,14 +290,14 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     private void CreateNewGroup(final String groupName)
     {
-        RootRef.child("Groups").child(groupName).setValue("")
+        generealGroupRef.child(groupName).setValue("")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task)
                     {
                         if (task.isSuccessful())
                         {
-                            Toast.makeText(MainActivity.this, groupName + " Group Created Successfully...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, groupName + " Groupie Created Successfully...", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -399,11 +401,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
             SendUserToSettingsActivity();
         }
-//        if (id == R.id.counsels)
-//        {
-//            startActivity(new Intent(MainActivity.this, CounsellingActivity.class));
-////            RequestNewGroup();
-//        }
+        if (id == R.id.general_chat_room)
+        {
+            //close drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+            SendUserToGeneralChatRoom();
+//            RequestNewGroup();
+        }
         if (id == R.id.main_find_friends_option)
         {
             //close drawer
@@ -425,6 +429,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         }
         return true;
+    }
+
+    private void SendUserToGeneralChatRoom() {
+        String textGroupName = "General Chat Room";
+        Intent goToPrayers = new Intent(MainActivity.this, GroupChatActivity.class);
+        goToPrayers.putExtra("groupName" , textGroupName);
+        startActivity(goToPrayers);
     }
 
 

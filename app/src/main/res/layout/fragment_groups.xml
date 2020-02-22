@@ -6,12 +6,20 @@
     tools:context=".GroupsFragment">
 
 
-    <ListView
-        android:id="@+id/list_view"
+<!--    <ListView-->
+<!--        android:id="@+id/list_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:divider="@null"-->
+<!--        android:dividerHeight="0dp"-->
+<!--        android:paddingTop="18dp" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_group_recyc"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_group_fab"

@@ -88,10 +88,10 @@ public class JobPostings extends AppCompatActivity {
 
             @Override
             protected void populateView(final View v, final Jobs model, int position) {
-                final TextView title = (TextView) v.findViewById(R.id.job_item_title);
-                final TextView content = (TextView) v.findViewById(R.id.job_item_content);
-                final TextView postedBy = (TextView) v.findViewById(R.id.job_item_postedBy);
-                final CircleImageView image =  v.findViewById(R.id.job_item_image);
+                final TextView title = v.findViewById(R.id.job_item_title);
+                final TextView content = v.findViewById(R.id.job_item_content);
+                final TextView postedBy = v.findViewById(R.id.job_item_postedBy);
+                final CircleImageView image = v.findViewById(R.id.job_item_image);
                 final TextView timestamp = v.findViewById(R.id.job_item_timestamp);
 
 
