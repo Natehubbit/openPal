@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GroupInfoActivity"
+    android:orientation="vertical">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/group_info_appbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/group_info_collapsetoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        app:expandedTitleGravity="bottom|center_horizontal"
+        app:expandedTitleMarginBottom="60dp"
+        app:collapsedTitleGravity="center_vertical"
+        app:titleEnabled="true"
+        android:textAlignment="center"
+        app:contentScrim="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
+        <RelativeLayout
+            android:id="@+id/group_info_img_lay"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="0dp"
+            android:layout_centerHorizontal="true"
+            android:clipChildren="true">
+            <!--        <de.hdodenhof.circleimageview.CircleImageView-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:background="#00FFFFFF"-->
+<!--                app:cardPreventCornerOverlap="false"-->
+<!--                android:layout_marginBottom="100dp">-->
+<!--                <com.jgabrielfreitas.core.BlurImageView-->
+<!--                    android:id="@+id/blur_img4"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:scaleType="fitXY"-->
+<!--                    app:radius="24"/>-->
+<!--            </androidx.cardview.widget.CardView>-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                app:cardCornerRadius="0dp"
+                app:cardPreventCornerOverlap="false">
+                <com.jgabrielfreitas.core.BlurImageView
+                    android:id="@+id/group_info_blur_img2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    app:radius="24"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                app:cardCornerRadius="30dp"
+                app:cardUseCompatPadding="true"
+                app:cardPreventCornerOverlap="false"
+                android:elevation="100dp">
+
+                <ImageView
+                    android:id="@+id/group_info_imgview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/team"
+                    android:scaleType="centerCrop"
+                    app:strokeColor="@color/colorAccent"
+                    app:strokeWidth="1dp"/>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/group_info_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:popupTheme="@style/AppTheme"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_collapseMode="pin"
+            app:titleTextColor="#ffffff"
+            android:fitsSystemWindows="false"
+            app:navigationIcon="?android:homeAsUpIndicator"/>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Members"
+                android:gravity="center"
+                android:layout_marginTop="30dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/group_info_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

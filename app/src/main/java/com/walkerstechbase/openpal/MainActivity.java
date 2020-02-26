@@ -1,6 +1,5 @@
 package com.walkerstechbase.openpal;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -19,16 +18,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -46,8 +41,6 @@ import com.walkerstechbase.openpal.General.Constansts;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener
 {
@@ -111,14 +104,30 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         });
 
 
-
-        myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
-        myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
-        myViewPager.setAdapter(myTabsAccessorAdapter);
-
-
-        myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        myTabLayout = findViewById(R.id.main_tabs);
+        myViewPager = findViewById(R.id.main_tabs_pager);
         myTabLayout.setupWithViewPager(myViewPager);
+        myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
+//        myViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(myTabLayout));
+        myViewPager.setAdapter(myTabsAccessorAdapter);
+        myTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
 
         invalidateOptionsMenu();
     }
@@ -239,7 +248,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         if (item.getItemId() == R.id.main_available_counsels)
         {
             startActivity(new Intent(MainActivity.this, CounsellingActivity.class));
-//            SendUserToFindFriendsActivity();
         }
 
         return true;
@@ -406,7 +414,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             //close drawer
             drawerLayout.closeDrawer(GravityCompat.START);
             SendUserToGeneralChatRoom();
-//            RequestNewGroup();
         }
         if (id == R.id.main_find_friends_option)
         {

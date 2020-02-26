@@ -210,7 +210,7 @@ public class GroupsFragment extends Fragment
                 //group stuff
                 ProgressDialog progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setCancelable(false);
-                progressDialog.setTitle("Creating group");
+                progressDialog.setTitle("Please wait...");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 EditText groupNameET = new EditText(getActivity());
@@ -460,7 +460,7 @@ public class GroupsFragment extends Fragment
 
                 if (getGroupProfileImage.isEmpty()){
                 }else if (!getGroupProfileImage.isEmpty()){
-                    Picasso.get().load(getGroupProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(image, new Callback() {
+                    Picasso.get().load(getGroupProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.team).into(image, new Callback() {
                         @Override
                         public void onSuccess() {
 

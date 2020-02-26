@@ -71,7 +71,6 @@ public class FindFriendsActivity extends AppCompatActivity
                             @Override
                             public void onError(Exception e) {
                                 Picasso.get().load(model.getImage()).into(holder.profileImage);
-
                             }
                         });
 

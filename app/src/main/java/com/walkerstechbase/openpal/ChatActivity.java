@@ -98,6 +98,8 @@ public class ChatActivity extends AppCompatActivity {
     String messageText;
     FirebaseUser firebaseUser;
     boolean notify = false;
+    private FirebaseUser currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -111,6 +113,7 @@ public class ChatActivity extends AppCompatActivity {
         messageSenderID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
 
         messageReceiverID = getIntent().getExtras().get("visit_user_id").toString();
         messageReceiverName = getIntent().getExtras().get("visit_user_name").toString();
@@ -608,5 +611,78 @@ public class ChatActivity extends AppCompatActivity {
             });
         }
     }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        if (currentUser == null)
+        {
+            SendUserToLoginActivity();
+        }
+        else
+        {
+            //updating the user's status to be online
+            updateUserStatus("online");
+
+            //VerifyUserExistance();
+        }
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        if (currentUser != null)
+        {
+            updateUserStatus("offline");
+        }
+    }
+
+
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (currentUser != null)
+        {
+            updateUserStatus("offline");
+        }
+    }
+
+    private void SendUserToLoginActivity()
+    {
+        Intent loginIntent = new Intent(ChatActivity.this, PhoneLoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+
+    }
+
+    private void updateUserStatus(String state)
+    {
+        String saveCurrentTime, saveCurrentDate;
+
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
+        HashMap<String, Object> onlineStateMap = new HashMap<>();
+        onlineStateMap.put("time", saveCurrentTime);
+        onlineStateMap.put("date", saveCurrentDate);
+        onlineStateMap.put("state", state);
+
+        RootRef.child("Users").child(messageSenderID).child("userState")
+                .updateChildren(onlineStateMap);
+
+    }
+
 
 }

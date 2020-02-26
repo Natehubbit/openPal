@@ -26,6 +26,7 @@ import com.walkerstechbase.openpal.General.Constansts;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,20 +67,24 @@ public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
                 @Override
                 public void onClick(View view) {
                     String textGroupName = groupName;
+
                     Intent goToPrayers = new Intent(view.getContext(), GroupChatActivity.class);
                     goToPrayers.putExtra("groupName" , textGroupName);
+                    goToPrayers.putExtra("groupIDD", groupID);
+                    goToPrayers.putExtra("groupImagee", groupImage);
+                    goToPrayers.putExtra("groupAdminIDD", groupAdminID);
                     view.getContext().startActivity(goToPrayers);
                 }
             });
 
 
             if (groupImage.equals("")){
-                holder.circleImageView.setImageResource(R.drawable.imgplaceholder);
+                holder.circleImageView.setImageResource(R.drawable.team);
                 Log.d("exec", "empty was executed");
             }
             else if (!groupImage.equals("")){
                 Log.d("44", "44 is executed");
-                Picasso.get().load(groupImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(holder.circleImageView, new Callback() {
+                Picasso.get().load(groupImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.team).into(holder.circleImageView, new Callback() {
                     @Override
                     public void onSuccess() {
 
@@ -91,6 +96,21 @@ public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
                     }
                 });
             }
+
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(Constansts.USER_REF);
+            userRef.child(groupAdminID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String adminName = Objects.requireNonNull(dataSnapshot.child("name").getValue()).toString();
+                    holder.adminName.setText(String.format("created by %s", adminName));
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
 
 //        else {
@@ -101,7 +121,7 @@ public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
 //                        final String receiverImage = dataSnapshot.child("groupImage").getValue().toString();
 //                        Log.d("pathh" ,"pathh " + receiverImage);
 //
-//                        Picasso.get().load(receiverImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.imgplaceholder).into(holder.circleImageView, new Callback() {
+//                        Picasso.get().load(receiverImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.team).into(holder.circleImageView, new Callback() {
 //                            @Override
 //                            public void onSuccess() {
 //
@@ -131,7 +151,7 @@ public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
     }
 
     public class theHolder extends RecyclerView.ViewHolder {
-        TextView title;
+        TextView title, adminName;
         CircleImageView circleImageView;
         RelativeLayout relativeLayout;
 
@@ -140,6 +160,7 @@ public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
             title = itemView.findViewById(R.id.group_profile_name);
             circleImageView = itemView.findViewById(R.id.group_profile_image);
             relativeLayout = itemView.findViewById(R.id.gro_lay);
+            adminName = itemView.findViewById(R.id.group_admin_name);
         }
     }
 }

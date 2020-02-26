@@ -1,5 +1,6 @@
 package com.walkerstechbase.openpal;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -8,7 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class TabsAccessorAdapter extends FragmentPagerAdapter
 {
 
-    public TabsAccessorAdapter(FragmentManager fm)
+    TabsAccessorAdapter(FragmentManager fm)
     {
         super(fm);
     }
@@ -41,10 +42,11 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter
 
 
     @Override
-    public int getCount()
-    {
-        return 3;
+    public int getCount() {
+            return 3;
     }
+
+
 
 
     @Nullable

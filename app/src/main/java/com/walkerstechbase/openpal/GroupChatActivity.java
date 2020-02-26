@@ -4,7 +4,6 @@ package com.walkerstechbase.openpal;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.SweepGradient;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,11 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
-import android.widget.TextView;
-
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,10 +23,6 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.github.angads25.toggle.interfaces.OnToggledListener;
-import com.github.angads25.toggle.model.ToggleableView;
-import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,8 +40,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
@@ -76,7 +65,7 @@ public class GroupChatActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
     private DatabaseReference UsersRef, GroupNameRef, GroupMessageKeyRef;
-    private String currentGroupName,  currentUserName, currentDate, currentTime, currentUserImage;
+    private String currentGroupName,  currentUserName, currentDate, currentTime, currentUserImage, groupAdmin, groupImage, groupId;
     String currentUserID;
     String saveCurrentTime, saveCurrentDate;
     //String messageSenderID;
@@ -100,6 +89,10 @@ public class GroupChatActivity extends AppCompatActivity
 
 
         currentGroupName = getIntent().getExtras().get("groupName").toString();
+        groupAdmin = getIntent().getExtras().get("groupAdminIDD").toString();
+        groupImage = getIntent().getExtras().get("groupImagee").toString();
+        groupId = getIntent().getExtras().get("groupIDD").toString();
+
        // Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
         InitializeFields();
         final EmojiPopup emojiPopup = EmojiPopup.Builder.fromRootView(findViewById(android.R.id.content)).build(userMessageInput);
@@ -232,6 +225,18 @@ public class GroupChatActivity extends AppCompatActivity
             }
         });
 
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GroupChatActivity.this, GroupInfoActivity.class);
+                intent.putExtra("theGroupName", currentGroupName);
+                intent.putExtra("theGroupID", groupId);
+                intent.putExtra("theGroupAdmin", groupAdmin);
+                intent.putExtra("theGroupImage", groupImage);
+
+                startActivity(intent);
+            }
+        });
 
 
 //        GroupNameRef.keepSynced(true);

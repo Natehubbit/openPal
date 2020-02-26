@@ -15,7 +15,8 @@
         android:roundIcon="@drawable/logopen"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddGroupMembers"></activity>
+        <activity android:name=".GroupInfoActivity"></activity>
+        <activity android:name=".AddGroupMembers" />
 
         <service android:name=".Notification.GettingDeviceTokenService">
             <intent-filter>
