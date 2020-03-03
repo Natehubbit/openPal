@@ -1,22 +1,33 @@
 package com.walkerstechbase.openpal;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -24,12 +35,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.jgabrielfreitas.core.BlurImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.walkerstechbase.openpal.General.Constansts;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -40,10 +57,17 @@ public class GroupInfoActivity extends AppCompatActivity {
     AppBarLayout appBarLayout;
     BlurImageView groupInfoImg2;
     ImageView groupInfoImgView;
-    String getGroupProfileImage = "https://firebasestorage.googleapis.com/v0/b/openpal-1c7e8.appspot.com/o/Profile%20Images%2F69C8zFSi0BNiQnZdPzqO69tPzeR2.jpg?alt=media&token=9cb73570-e5eb-4f94-be25-cba5387bbfe4";
+    Button changeGroupNameBtn;
+//    String getGroupProfileImage = "https://firebasestorage.googleapis.com/v0/b/openpal-1c7e8.appspot.com/o/Profile%20Images%2F69C8zFSi0BNiQnZdPzqO69tPzeR2.jpg?alt=media&token=9cb73570-e5eb-4f94-be25-cba5387bbfe4";
 
     private RecyclerView GroupInfosRecyclerList;
     String name, groupId, groupAdmin, groupImage;
+    private static final int GalleryPick = 1;
+    private ProgressDialog loadingBar;
+    private StorageReference groupProfileImageRef;
+    String downloaedUrl;
+    DatabaseReference rootRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +79,13 @@ public class GroupInfoActivity extends AppCompatActivity {
         GroupInfosRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
 
-        name = getIntent().getStringExtra("theGroupName");
+//        name = getIntent().getStringExtra("theGroupName");
         groupId = getIntent().getStringExtra("theGroupID");
-        groupAdmin = getIntent().getStringExtra("theGroupAdmin");
-        groupImage = getIntent().getStringExtra("theGroupImage");
+//        groupAdmin = getIntent().getStringExtra("theGroupAdmin");
+//        groupImage = getIntent().getStringExtra("theGroupImage");
+        groupProfileImageRef = FirebaseStorage.getInstance().getReference().child("Group Icons");
+        rootRef = FirebaseDatabase.getInstance().getReference();
+
 
         //toolbar
         topToolbar();
@@ -69,35 +96,61 @@ public class GroupInfoActivity extends AppCompatActivity {
         //get users into fireBase recycler view
         firebaseRecycler();
 
-        if (getGroupProfileImage.isEmpty()){
-        }else if (!getGroupProfileImage.isEmpty()){
-            Picasso.get().load(getGroupProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.team).into(groupInfoImgView, new Callback() {
-                @Override
-                public void onSuccess() {
+        //
+        imageView();
 
-                }
+        //change group name
+        changeGroupName();
 
-                @Override
-                public void onError(Exception e) {
-                    Picasso.get().load(getGroupProfileImage).into(groupInfoImgView);
-                }
-            });
+        //getting group picture and group name from directly from database and not from intent to avoid crashes
+        rootRef.child(Constansts.GROUP_REF).child(groupId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Groupie groupie = dataSnapshot.getValue(Groupie.class);
+                    assert groupie != null;
+                    groupImage = groupie.getGroupImage();
+                    groupAdmin = groupie.getAdminId();
+                    name = groupie.getGroupName();
 
-            groupInfoImg2.setBackground(getResources().getDrawable(R.drawable.team));
-            Picasso.get().setIndicatorsEnabled(false);
-            Picasso.get().load(getGroupProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(groupInfoImg2, new Callback() {
-                @Override
-                public void onSuccess() {
-                    groupInfoImg2.setBlur(25);
-                }
+                    if (groupImage.isEmpty()){
+                    }else if (!groupImage.isEmpty()){
+                        Picasso.get().load(groupImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.team).into(groupInfoImgView, new Callback() {
+                            @Override
+                            public void onSuccess() {
 
-                @Override
-                public void onError(Exception e) {
-                    Picasso.get().setIndicatorsEnabled(false);
-                    Picasso.get().load(getGroupProfileImage).into(groupInfoImgView);
-                }
-            });
-        }
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(groupImage).into(groupInfoImgView);
+                            }
+                        });
+
+                        groupInfoImg2.setBackground(getResources().getDrawable(R.drawable.team));
+                        Picasso.get().setIndicatorsEnabled(false);
+                        Picasso.get().load(groupImage).networkPolicy(NetworkPolicy.OFFLINE).into(groupInfoImg2, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                groupInfoImg2.setBlur(25);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().setIndicatorsEnabled(false);
+                                Picasso.get().load(groupImage).into(groupInfoImgView);
+                            }
+                        });
+                    }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     private void init() {
@@ -107,6 +160,8 @@ public class GroupInfoActivity extends AppCompatActivity {
         groupInfoImg2 = findViewById(R.id.group_info_blur_img2);
         groupInfoImgView = findViewById(R.id.group_info_imgview);
         GroupInfosRecyclerList = findViewById(R.id.group_info_recyclerview);
+        changeGroupNameBtn = findViewById(R.id.group_name_change);
+        loadingBar = new ProgressDialog(this);
 
     }
 
@@ -146,6 +201,18 @@ public class GroupInfoActivity extends AppCompatActivity {
                     collapsingToolbarLayout.setTitle(" ");
                     isShow = false;
                 }
+            }
+        });
+    }
+
+    private void imageView(){
+        groupInfoImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GalleryPick);
             }
         });
     }
@@ -242,5 +309,176 @@ public class GroupInfoActivity extends AppCompatActivity {
             userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode==GalleryPick  &&  resultCode==RESULT_OK  &&  data!=null)
+        {
+            Uri ImageUri = data.getData();
+
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK)
+            {
+                loadingBar.setTitle("Change group icon");
+                loadingBar.setMessage("Updating group icon...");
+                loadingBar.setCanceledOnTouchOutside(false);
+                loadingBar.show();
+
+                Uri resultUri = result.getUri();
+
+
+                final StorageReference filePath = groupProfileImageRef.child(groupId + ".jpg");
+
+
+                filePath.putFile(resultUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(GroupInfoActivity.this, "Profile Image uploaded Successfully...", Toast.LENGTH_SHORT).show();
+
+                                filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        downloaedUrl = uri.toString();
+
+
+
+                                        rootRef.child(Constansts.GROUP_REF).child(groupId).child("groupImage")
+                                                .setValue(downloaedUrl)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task)
+                                                    {
+                                                        if (task.isSuccessful())
+                                                        {
+                                                            Toast.makeText(GroupInfoActivity.this, "Image save in Database, Successfully...", Toast.LENGTH_SHORT).show();
+                                                            loadingBar.dismiss();
+
+                                                            //update the image in the imageView instantly
+                                                            groupImage = downloaedUrl;
+                                                            Picasso.get().load(groupImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.team).into(groupInfoImgView, new Callback() {
+                                                                @Override
+                                                                public void onSuccess() {
+                                                                    Picasso.get().setIndicatorsEnabled(false);
+                                                                    Picasso.get().load(groupImage).networkPolicy(NetworkPolicy.OFFLINE).into(groupInfoImg2, new Callback() {
+                                                                        @Override
+                                                                        public void onSuccess() {
+                                                                            groupInfoImg2.setBlur(25);
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onError(Exception e) {
+                                                                            Picasso.get().setIndicatorsEnabled(false);
+                                                                            Picasso.get().load(groupImage).into(groupInfoImgView);
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                @Override
+                                                                public void onError(Exception e) {
+                                                                    Picasso.get().load(groupImage).into(groupInfoImgView);
+                                                                }
+                                                            });
+
+
+
+                                                        }
+                                                        else
+                                                        {
+                                                            String message = task.getException().toString();
+                                                            Toast.makeText(GroupInfoActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                                            loadingBar.dismiss();
+                                                        }
+                                                    }
+                                                });
+
+                                    }
+                                });
+                                //final String downloaedUrl = task.getResult().getDownloadUrl().toString();
+                                //final String downloaedUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                                //final String downloaedUrl = taskSnapshot.getUploadSessionUri().toString();
+
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(GroupInfoActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+                    }
+                });
+
+            }
+        }
+    }
+
+    private void changeGroupName(){
+        changeGroupNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProgressDialog progressDialog = new ProgressDialog(GroupInfoActivity.this);
+                progressDialog.setCancelable(false);
+                progressDialog.setTitle("Please wait...");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(GroupInfoActivity.this);
+                EditText groupNameET = new EditText(GroupInfoActivity.this);
+                builder.setTitle("Change Groupie Name");
+                builder.setView(groupNameET);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        progressDialog.show();
+
+                        String grouptext = groupNameET.getText().toString();
+                        if (!grouptext.isEmpty()){
+                            Groupie groupie = new Groupie();
+                            groupie.setGroupName(grouptext);
+//                            HashMap<String, String> map = new HashMap<>();
+//                            map.put("groupName", grouptext);
+
+//                            DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference().child(Constansts.GROUP_REF).child(groupId);
+                            rootRef.child(Constansts.GROUP_REF).child(groupId).child("groupName")
+                                    .setValue(grouptext).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    dialogInterface.dismiss();
+                                    progressDialog.dismiss();
+
+                                    //updating toolbar title
+                                    toolbar.setTitle(grouptext);
+                                    Toast.makeText(GroupInfoActivity.this, "Group name changed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(GroupInfoActivity.this, "Failed, try again", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //dismiss dialog
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 }

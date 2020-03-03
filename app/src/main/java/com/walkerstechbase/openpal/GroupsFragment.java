@@ -197,11 +197,8 @@ public class GroupsFragment extends Fragment
 
         gIDList = new ArrayList<>();
         list_of_groups = new ArrayList<>();
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setHasFixedSize(true);
-//        theAdapter = new TheAdapter(list_of_groups);
-//        theAdapter.notifyDataSetChanged();
-        recyclerView.setLayoutManager(linearLayoutManager);
+
+
 
 
         addNewGroupFab.setOnClickListener(new View.OnClickListener() {
@@ -279,79 +276,74 @@ public class GroupsFragment extends Fragment
 //            }
 //        });
 
-
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setHasFixedSize(true);
+        theAdapter = new TheAdapter(getContext(), list_of_groups);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         userRef.child(currentUserID).child("userGroups").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                //this is to get the child count
                 count = dataSnapshot.getChildrenCount();
+                //this is to get the the groups
                 userRef.child(currentUserID).child("userGroups").addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                            Log.d("getChildCount " ,"child count is " + count);
-                            gID = dataSnapshot.getValue().toString().replace("[", "").replace("]", "");
-                            Log.d("gID " , gID);
-                            gIDList.add(gID);
+                        Log.d("getChildCount " ,"child count is " + count);
+                        gID = dataSnapshot.getValue().toString().replace("[", "").replace("]", "");
+                        Log.d("gID " , gID);
+                        gIDList.add(gID);
 
-                            int size = 0;
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                size = Math.toIntExact(count);
-                            }
-                            Log.d("gidLIst size", String.valueOf(gIDList.size()));
 
-                            if (gIDList.size() == size){
-                                for (int i = 0; i < size; i++){
-                                    groupRef.child(gIDList.get(i)).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                Groupie groupie = dataSnapshot.getValue(Groupie.class);
+                        int size = 0;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                            size = Math.toIntExact(count);
+                        }
+                        Log.d("gidLIst size", String.valueOf(gIDList.size()));
 
-                                                list_of_groups.add(groupie);
-                                            if (groupie != null) {
-                                                Log.d("gg","gg " + groupie.groupName);
-                                                Log.d("ggImage","ggImage " + groupie.groupImage);
-                                            }
+                        if (gIDList.size() == size){
+                            for (int i = 0; i < size; i++){
+                                groupRef.child(gIDList.get(i)).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Groupie groupie = dataSnapshot.getValue(Groupie.class);
 
+
+                                        list_of_groups.add(groupie);
+                                        if (groupie != null) {
+                                            Log.d("gg","gg " + groupie.groupName);
+                                            Log.d("ggImage","ggImage " + groupie.groupImage);
+                                        }
 
 //                                                linearLayoutManager = new LinearLayoutManager(getActivity());
 //                                                recyclerView.setHasFixedSize(true);
-                                                theAdapter = new TheAdapter(list_of_groups);
-                                                theAdapter.notifyDataSetChanged();
+                                        TheAdapter theAdapter = new TheAdapter(getContext(),list_of_groups);
 //                                                recyclerView.setLayoutManager(linearLayoutManager);
-                                                recyclerView.setAdapter(theAdapter);
+                                        recyclerView.setAdapter(theAdapter);
+                                        theAdapter.notifyDataSetChanged();
 
-                                        }
+                                    }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        }
-                                    });
-                                }
+                                    }
+                                });
+                            }
 
-                            }else{
-                                Log.d("elseie ", "else state ");
+                        }else{
+                            Log.d("elseie ", "else state ");
 
                         }
-
-
-
-
-
-
 //                groupRef = FirebaseDatabase.getInstance().getReference().child(Constansts.GROUP_REF).child(gID);
-
-
-
-
 
                     }
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        theAdapter.notifyDataSetChanged();
+
                     }
 
                     @Override
@@ -378,7 +370,6 @@ public class GroupsFragment extends Fragment
 
             }
         });
-        //getting ids of groups related to a user
 
 
         return groupFragmentView;

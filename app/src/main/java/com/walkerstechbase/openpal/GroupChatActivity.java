@@ -89,8 +89,8 @@ public class GroupChatActivity extends AppCompatActivity
 
 
         currentGroupName = getIntent().getExtras().get("groupName").toString();
-        groupAdmin = getIntent().getExtras().get("groupAdminIDD").toString();
-        groupImage = getIntent().getExtras().get("groupImagee").toString();
+//        groupAdmin = getIntent().getExtras().get("groupAdminIDD").toString();
+//        groupImage = getIntent().getExtras().get("groupImagee").toString();
         groupId = getIntent().getExtras().get("groupIDD").toString();
 
        // Toast.makeText(GroupChatActivity.this, currentGroupName, Toast.LENGTH_SHORT).show();
@@ -101,7 +101,8 @@ public class GroupChatActivity extends AppCompatActivity
         currentUserID = mAuth.getCurrentUser().getUid();
         //messageSenderID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
+        GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId);
+//        GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
         RootRef = FirebaseDatabase.getInstance().getReference();
 
         loadingBar = new ProgressDialog(this);
@@ -404,7 +405,12 @@ public class GroupChatActivity extends AppCompatActivity
                 if (dataSnapshot.exists())
                 {
                     currentUserName = dataSnapshot.child("name").getValue().toString();
-                    currentUserImage = dataSnapshot.child("image").getValue().toString();
+
+                    if (dataSnapshot.child("image").exists()){
+                        currentUserImage = dataSnapshot.child("image").getValue().toString();
+                    }else if (!dataSnapshot.child("image").exists()){
+//                        Toast.makeText(GroupChatActivity.this, "user has no image or pp", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -539,11 +545,14 @@ public class GroupChatActivity extends AppCompatActivity
             if (!checker.equals("image")){
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("document files");
 
-                final String messageSenderRef = "Groups/" + currentUserID + "/" + currentGroupName;
-                final String messageReceiverRef = "Groups/" + currentGroupName + "/" + currentUserID;
+                final String messageSenderRef = "Groups/" + currentUserID + "/" + groupId;
+//                final String messageSenderRef = "Groups/" + currentUserID + "/" + currentGroupName;
+                final String messageReceiverRef = "Groups/" + groupId + "/" + currentUserID;
+//                final String messageReceiverRef = "Groups/" + currentGroupName + "/" + currentUserID;
 
                 DatabaseReference userMessageKeyRef = RootRef.child("Groups")
-                        .child(currentUserID).child(currentGroupName).push();
+                        .child(currentUserID).child(groupId).push();
+//                        .child(currentUserID).child(currentGroupName).push();
 
                 final String messagePushID = userMessageKeyRef.getKey();
 
@@ -564,7 +573,8 @@ public class GroupChatActivity extends AppCompatActivity
                                 messageImageBody.put("name", fileUri.getLastPathSegment());
                                 messageImageBody.put("type", checker);
                                 messageImageBody.put("from", currentUserID);
-                                messageImageBody.put("to", currentGroupName);
+                                messageImageBody.put("to", groupId);
+//                                messageImageBody.put("to", currentGroupName);
                                 messageImageBody.put("messageID", messagePushID);
                                 messageImageBody.put("time", saveCurrentTime);
                                 messageImageBody.put("date", saveCurrentDate);
@@ -600,11 +610,14 @@ public class GroupChatActivity extends AppCompatActivity
 //
 //                final String messageSenderRef = "Groups/" + currentUserID + "/" + currentGroupName;
 //                final String messageReceiverRef = "Groups/" + currentGroupName + "/" + currentUserID;
-                String messageSenderRef = "Groups/"  + currentGroupName;
-                String messageReceiverRef = "Groups/" + currentGroupName ;
+                String messageSenderRef = "Groups/"  + groupId;
+//                String messageSenderRef = "Groups/"  + currentGroupName;
+                String messageReceiverRef = "Groups/" + groupId ;
+//                String messageReceiverRef = "Groups/" + currentGroupName ;
 
                 DatabaseReference userMessageKeyRef = RootRef.child("Groups")
-                        .child(currentUserID).child(currentGroupName).push();
+                        .child(currentUserID).child(groupId).push();
+//                        .child(currentUserID).child(currentGroupName).push();
 
                 final String messagePushID = userMessageKeyRef.getKey();
 
@@ -633,7 +646,8 @@ public class GroupChatActivity extends AppCompatActivity
                             messageImageBody.put("type", checker);
                             messageImageBody.put("from", currentUserID);
                             messageImageBody.put("fromName", currentUserName);
-                            messageImageBody.put("to", currentGroupName);
+                            messageImageBody.put("to", groupId);
+//                            messageImageBody.put("to", currentGroupName);
                             messageImageBody.put("messageID", messagePushID);
                             messageImageBody.put("time", saveCurrentTime);
                             messageImageBody.put("date", saveCurrentDate);
@@ -680,12 +694,15 @@ public class GroupChatActivity extends AppCompatActivity
         else
         {
 
-            String messageSenderRef = "Groups/"  + currentGroupName;
-            String messageReceiverRef = "Groups/" + currentGroupName ;
+            String messageSenderRef = "Groups/"  + groupId;
+//            String messageSenderRef = "Groups/"  + currentGroupName;
+            String messageReceiverRef = "Groups/" + groupId ;
+//            String messageReceiverRef = "Groups/" + currentGroupName ;
 
 
             DatabaseReference userMessageKeyRef = RootRef.child("Groups")
-                    .child(currentGroupName).push();
+                    .child(groupId).push();
+//                    .child(currentGroupName).push();
 
             String messagePushID = userMessageKeyRef.getKey();
 
@@ -694,7 +711,8 @@ public class GroupChatActivity extends AppCompatActivity
             messageTextBody.put("type", "text");
             messageTextBody.put("from", currentUserID);
             messageTextBody.put("fromName", currentUserName);
-            messageTextBody.put("to", currentGroupName);
+            messageTextBody.put("to", groupId);
+//            messageTextBody.put("to", currentGroupName);
             messageTextBody.put("fromImage", currentUserImage);
             messageTextBody.put("messageID", messagePushID);
             messageTextBody.put("time", saveCurrentTime);

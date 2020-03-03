@@ -1,5 +1,6 @@
 package com.walkerstechbase.openpal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,11 +33,13 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
+public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder>{
+    Context context;
     private List<Groupie> groupList;
     private FirebaseAuth mAuth;
 
-    public TheAdapter(List<Groupie> groupList) {
+    public TheAdapter(Context context, List<Groupie> groupList) {
+        this.context = context;
         this.groupList = groupList;
     }
 
@@ -60,7 +65,7 @@ public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
             String groupName = groupie.getGroupName();
             String groupImage = groupie.getGroupImage();
 
-            DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference().child(Constansts.GROUP_REF).child(groupID);
+//            DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference().child(Constansts.GROUP_REF).child(groupID);
 
             holder.title.setText(groupName);
             holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -78,12 +83,11 @@ public class TheAdapter extends RecyclerView.Adapter<TheAdapter.theHolder> {
             });
 
 
-            if (groupImage.equals("")){
+            if (groupImage.equals("") || groupImage.isEmpty()){
                 holder.circleImageView.setImageResource(R.drawable.team);
                 Log.d("exec", "empty was executed");
             }
             else if (!groupImage.equals("")){
-                Log.d("44", "44 is executed");
                 Picasso.get().load(groupImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.team).into(holder.circleImageView, new Callback() {
                     @Override
                     public void onSuccess() {

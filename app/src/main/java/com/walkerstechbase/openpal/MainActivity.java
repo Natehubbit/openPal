@@ -440,8 +440,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     private void SendUserToGeneralChatRoom() {
         String textGroupName = "General Chat Room";
+        String groupId = "g3n3ralgr0up1d";
         Intent goToPrayers = new Intent(MainActivity.this, GroupChatActivity.class);
         goToPrayers.putExtra("groupName" , textGroupName);
+        goToPrayers.putExtra("groupIDD", groupId);
+//        goToPrayers.putExtra("groupAdminIDD", " ");
+//        goToPrayers.putExtra("groupImagee", " ");
         startActivity(goToPrayers);
     }
 
