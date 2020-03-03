@@ -39,27 +39,27 @@
         android:clipChildren="true">
         <!--        <de.hdodenhof.circleimageview.CircleImageView-->
 
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:background="#00FFFFFF"-->
+<!--            app:cardPreventCornerOverlap="false"-->
+<!--            android:layout_marginBottom="100dp">-->
+<!--            <com.jgabrielfreitas.core.BlurImageView-->
+<!--                android:id="@+id/blur_img4"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:scaleType="fitXY"-->
+<!--                app:radius="24"/>-->
+<!--        </androidx.cardview.widget.CardView>-->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:background="#00FFFFFF"
-            app:cardPreventCornerOverlap="false"
-            android:layout_marginBottom="100dp">
-            <com.jgabrielfreitas.core.BlurImageView
-                android:id="@+id/blur_img4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                app:radius="24"/>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            app:cardCornerRadius="30dp"
+            app:cardCornerRadius="0dp"
             app:cardPreventCornerOverlap="false">
             <com.jgabrielfreitas.core.BlurImageView
                 android:id="@+id/blur_img3"

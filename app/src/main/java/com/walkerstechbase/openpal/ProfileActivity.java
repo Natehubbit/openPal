@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity
     private String receiverUserID, senderUserID, Current_State;
 
     private BlurImageView blurImageView;
-    private BlurImageView blurImageView2;
+//    private BlurImageView blurImageView2;
     private ImageView userProfileImage;
     private TextView userProfileName, userProfileStatus;
     private ImageButton DeclineMessageRequestButton;
@@ -67,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity
 
 
         blurImageView = findViewById(R.id.blur_img3);
-        blurImageView2 = findViewById(R.id.blur_img4);
+//        blurImageView2 = findViewById(R.id.blur_img4);
         userProfileImage = findViewById(R.id.set_profile_image4);
         userProfileName =  findViewById(R.id.visit_user_name);
         userProfileStatus = findViewById(R.id.visit_profile_status);
@@ -134,19 +134,19 @@ public class ProfileActivity extends AppCompatActivity
                     });
 
 
-                    Picasso.get().setIndicatorsEnabled(false);
-                    Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImageView2, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            blurImageView2.setBlur(25);
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().setIndicatorsEnabled(false);
-                            Picasso.get().load(userImage).into(blurImageView2);
-                        }
-                    });
+//                    Picasso.get().setIndicatorsEnabled(false);
+//                    Picasso.get().load(userImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImageView2, new Callback() {
+//                        @Override
+//                        public void onSuccess() {
+//                            blurImageView2.setBlur(25);
+//                        }
+//
+//                        @Override
+//                        public void onError(Exception e) {
+//                            Picasso.get().setIndicatorsEnabled(false);
+//                            Picasso.get().load(userImage).into(blurImageView2);
+//                        }
+//                    });
 
                     ManageChatRequests();
                 }

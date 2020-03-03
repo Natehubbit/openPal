@@ -53,7 +53,7 @@ public class SettingsActivity extends AppCompatActivity
     ImageButton icon100;
     private ImageView userProfileImage;
     private BlurImageView blurImgView;
-    private BlurImageView blurImgView2;
+//    private BlurImageView blurImgView2;
 
     private String currentUserID;
     private FirebaseAuth mAuth;
@@ -123,7 +123,7 @@ public class SettingsActivity extends AppCompatActivity
         userStatus =  findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
         blurImgView = findViewById(R.id.blur_img);
-        blurImgView2 = findViewById(R.id.blur_img2);
+//        blurImgView2 = findViewById(R.id.blur_img2);
         loadingBar = new ProgressDialog(this);
 
         SettingsToolBar = findViewById(R.id.settings_toolbar);
@@ -313,19 +313,19 @@ public class SettingsActivity extends AppCompatActivity
                                     }
                                 });
 
-                                Picasso.get().setIndicatorsEnabled(false);
-                                Picasso.get().load(retrieveProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImgView2, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        blurImgView2.setBlur(25);
-                                    }
-
-                                    @Override
-                                    public void onError(Exception e) {
-                                        Picasso.get().setIndicatorsEnabled(false);
-                                        Picasso.get().load(retrieveProfileImage).into(blurImgView2);
-                                    }
-                                });
+//                                Picasso.get().setIndicatorsEnabled(false);
+//                                Picasso.get().load(retrieveProfileImage).networkPolicy(NetworkPolicy.OFFLINE).into(blurImgView2, new Callback() {
+//                                    @Override
+//                                    public void onSuccess() {
+//                                        blurImgView2.setBlur(25);
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Exception e) {
+//                                        Picasso.get().setIndicatorsEnabled(false);
+//                                        Picasso.get().load(retrieveProfileImage).into(blurImgView2);
+//                                    }
+//                                });
 
                             }
 
