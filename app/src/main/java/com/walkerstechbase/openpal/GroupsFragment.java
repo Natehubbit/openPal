@@ -287,7 +287,7 @@ public class GroupsFragment extends Fragment
                 //this is to get the child count
                 count = dataSnapshot.getChildrenCount();
                 //this is to get the the groups
-                userRef.child(currentUserID).child("userGroups").addChildEventListener(new ChildEventListener() {
+                userRef.child(currentUserID).child(Constansts.USER_GROUPS).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 

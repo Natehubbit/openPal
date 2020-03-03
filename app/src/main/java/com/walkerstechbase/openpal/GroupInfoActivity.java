@@ -12,7 +12,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,7 +61,7 @@ public class GroupInfoActivity extends AppCompatActivity {
     AppBarLayout appBarLayout;
     BlurImageView groupInfoImg2;
     ImageView groupInfoImgView;
-    Button changeGroupNameBtn;
+    Button changeGroupNameBtn, exitGroupBtn;
 //    String getGroupProfileImage = "https://firebasestorage.googleapis.com/v0/b/openpal-1c7e8.appspot.com/o/Profile%20Images%2F69C8zFSi0BNiQnZdPzqO69tPzeR2.jpg?alt=media&token=9cb73570-e5eb-4f94-be25-cba5387bbfe4";
 
     private RecyclerView GroupInfosRecyclerList;
@@ -68,10 +72,16 @@ public class GroupInfoActivity extends AppCompatActivity {
     String downloaedUrl;
     DatabaseReference rootRef;
 
+    private String currentUserID;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
 
         //init
         init();
@@ -101,6 +111,9 @@ public class GroupInfoActivity extends AppCompatActivity {
 
         //change group name
         changeGroupName();
+
+        //exit group
+        exitGroup();
 
         //getting group picture and group name from directly from database and not from intent to avoid crashes
         rootRef.child(Constansts.GROUP_REF).child(groupId).addValueEventListener(new ValueEventListener() {
@@ -161,6 +174,7 @@ public class GroupInfoActivity extends AppCompatActivity {
         groupInfoImgView = findViewById(R.id.group_info_imgview);
         GroupInfosRecyclerList = findViewById(R.id.group_info_recyclerview);
         changeGroupNameBtn = findViewById(R.id.group_name_change);
+        exitGroupBtn = findViewById(R.id.group_exit);
         loadingBar = new ProgressDialog(this);
 
     }
@@ -478,6 +492,136 @@ public class GroupInfoActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
+            }
+        });
+    }
+
+    private void exitGroup(){
+        exitGroupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder builder;
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    // builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                    builder = new AlertDialog.Builder(GroupInfoActivity.this, android.R.style.Theme_Material_Light_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(GroupInfoActivity.this);
+                }
+                builder.setTitle("Exit Group?\n")
+                        .setMessage("Are you sure you want to leave group?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                rootRef.child(Constansts.USER_REF).child(currentUserID).child(Constansts.USER_GROUPS).addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                        String getIdToDelete = dataSnapshot.child("0").getValue().toString();
+                                        if (groupId.equals(getIdToDelete)) {
+                                            String nodeGroupToDelete = dataSnapshot.getKey();
+                                            deleteGroupFromUserGroups(nodeGroupToDelete);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //do nothing
+                            }
+                        }).show();
+
+            }
+        });
+    }
+
+    private void deleteGroupFromUserGroups(String key){
+        rootRef.child(Constansts.USER_REF).child(currentUserID).child(Constansts.USER_GROUPS).child(key).removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //deleting user from group member list
+                        DatabaseReference membersRef = FirebaseDatabase.getInstance().getReference().child(Constansts.GROUP_REF).child(groupId).child(Constansts.MEMBERS_REF);
+                        membersRef.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                String currentUserIdd = dataSnapshot.child("uid").getValue().toString();
+                                Log.d("TAG", " uid : " + currentUserIdd);
+                                if (currentUserID.equals(currentUserIdd)){
+                                    String getMemberNodeToDelete = dataSnapshot.getKey();
+                                    Log.d("TAG", "onChildAdded: " + getMemberNodeToDelete);
+                                    deleteMemberFromGroup(getMemberNodeToDelete);
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(GroupInfoActivity.this, "Failed, try again", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void deleteMemberFromGroup(String getMemberNodeToDelete) {
+        rootRef.child(Constansts.GROUP_REF).child(groupId).child(Constansts.MEMBERS_REF).child(getMemberNodeToDelete).removeValue()
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Exited Group", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(GroupInfoActivity.this, MainActivity.class));
+                finish();
+
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(GroupInfoActivity.this, "Failed, Try again", Toast.LENGTH_SHORT).show();
             }
         });
     }
