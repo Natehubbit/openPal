@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.onesignal.OneSignal;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -15,13 +14,13 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        //below is for one signal
-        // OneSignal Initialization
-        OneSignal.startInit(this)
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
-                .init();
-        // above is for one signal
+//        //below is for one signal
+//        // OneSignal Initialization
+//        OneSignal.startInit(this)
+//                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+//                .unsubscribeWhenNotificationsAreDisabled(true)
+//                .init();
+//        // above is for one signal
         Window w = getWindow();
         w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 

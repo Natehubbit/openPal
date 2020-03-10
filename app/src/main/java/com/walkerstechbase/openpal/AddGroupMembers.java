@@ -1,6 +1,7 @@
 package com.walkerstechbase.openpal;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,8 +24,12 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -39,9 +44,10 @@ public class AddGroupMembers extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView FindFriendsRecyclerList;
-    private DatabaseReference UsersRef, memberRef, groupRef;
+    private DatabaseReference UsersRef, memberRef, groupRef, userGroupRef;
     private ArrayList<UserObject> members;
     private ArrayList userGroupList;
+    private ArrayList userGroupList2;
     FloatingActionButton addMembersFab;
 
     int getTotalContactList = 0;
@@ -67,6 +73,7 @@ public class AddGroupMembers extends AppCompatActivity {
 
         members = new ArrayList<>();
         userGroupList = new ArrayList();
+        userGroupList2 = new ArrayList();
 
         addMembersFab = findViewById(R.id.add_members_fab);
         FindFriendsRecyclerList = findViewById(R.id.add_members_recycler_list);
@@ -90,11 +97,49 @@ public class AddGroupMembers extends AppCompatActivity {
                     @Override
                     protected void onBindViewHolder(@NonNull final AddGroupMembers.AddGroupMembersViewHolder holder, final int position, @NonNull final UserObject model)
                     {
-                        //get the itemcount of the children in the recycler view
+                        //get the item count of the children in the recycler view
                         getTotalContactList = getItemCount();
                         Log.d("total item count ", String.valueOf(getTotalContactList));
 
                         UserObject userObject = getItem(position);
+
+                        //checking to see if user is already a member of the group
+                        memberRef.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                if (dataSnapshot.exists()){
+                                    String getTheId = dataSnapshot.child("uid").getValue().toString();
+                                    if (getTheId.equals(model.getUid())){
+                                        holder.checkBox.setChecked(true);
+                                    }else {
+
+                                    }
+                                }else{
+                                    Toast.makeText(AddGroupMembers.this, "Add members", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
 
                         holder.userName.setText(model.getName());
                         holder.userStatus.setText(model.getStatus());
@@ -136,16 +181,85 @@ public class AddGroupMembers extends AppCompatActivity {
                                 progressDialog.show();
 
                                 //Adding group id to user node to tell the groups the user belongs to
-                                //this is outside of tho for loop to prevent the group id from posting multiple times
+                                //this is outside of the for loop to prevent the group id from posting multiple times
                                 userGroupList.add(intentGroupID);
 
+//                                String idd = model.getUid();
+//                                userGroupList2.add(idd);
+                                for (int k = 0; k < userGroupList2.size(); k++) {
+                                    //checking if user was already a member of the group so it does not create the group twice in the database when we push to the child
+
+                                    String eyeDee =userGroupList2.get(k).toString();
+                                    Log.d("eyeDee", eyeDee);
+
+                                    UsersRef.child(eyeDee).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.hasChild("userGroups")){
+                                                UsersRef.child(eyeDee).child("userGroups").addChildEventListener(new ChildEventListener() {
+                                                    @Override
+                                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                        String getID = dataSnapshot.child("0").getValue().toString();
+                                                        Log.d("catch", "this execed");
+                                                        if (intentGroupID.equals(getID)){
+                                                            //if the user is already in the group do not create another node the user groups other wise it'll duplicate
+                                                            //so do nothing
+                                                            Log.d("TAG" , "ifisie");
+                                                            Log.d("TAG" , "ifisie idd " + eyeDee);
+
+                                                            //remove user id from array list
+                                                            userGroupList2.remove(eyeDee);
+
+//                                                            //remove id from user to create new one
+//                                                            String gendId = dataSnapshot.getKey();
+//                                                            UsersRef.child(eyeDee).child("userGroups").child(gendId).child(getID).removeValue();
+                                                        } else if (userGroupList2.contains(eyeDee)){
+                                                            //else if the user is now being added, create node in user groups
+                                                            UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
+                                                            Log.d("TAG" , "elseie");
+//                                                            Log.d("TAG" , "elseie idd " + idd);
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+
+                                            }else {
+                                                UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
                                 //looping through array list and pushing to database
                                 for (int j = 0; j < members.size(); j++){
                                     Log.d("AddGroupMembers : " , members.get(j).getName());
-//
+
                                     //getting user id of selected users
                                     String usersId = members.get(j).getUid();
-                                    UsersRef.child(usersId).child("userGroups").push().setValue(userGroupList);
+
 
 
                                     //pushing the member list to database
@@ -186,6 +300,7 @@ public class AddGroupMembers extends AppCompatActivity {
                                         userObject.setImage(model.getImage());
                                         userObject.setStatus(model.getStatus());
                                         userObject.setUid(model.getUid());
+                                    userGroupList2.add(model.getUid());
 
 //                                    }
 

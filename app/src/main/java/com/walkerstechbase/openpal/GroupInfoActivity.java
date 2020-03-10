@@ -16,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -74,6 +76,7 @@ public class GroupInfoActivity extends AppCompatActivity {
 
     private String currentUserID;
     private FirebaseAuth mAuth;
+    MenuItem addMembers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,7 @@ public class GroupInfoActivity extends AppCompatActivity {
 
 //        name = getIntent().getStringExtra("theGroupName");
         groupId = getIntent().getStringExtra("theGroupID");
-//        groupAdmin = getIntent().getStringExtra("theGroupAdmin");
+        groupAdmin = getIntent().getStringExtra("theGroupAdmin");
 //        groupImage = getIntent().getStringExtra("theGroupImage");
         groupProfileImageRef = FirebaseStorage.getInstance().getReference().child("Group Icons");
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -164,6 +167,7 @@ public class GroupInfoActivity extends AppCompatActivity {
         });
 
 
+        invalidateOptionsMenu();
     }
 
     private void init() {
@@ -176,6 +180,9 @@ public class GroupInfoActivity extends AppCompatActivity {
         changeGroupNameBtn = findViewById(R.id.group_name_change);
         exitGroupBtn = findViewById(R.id.group_exit);
         loadingBar = new ProgressDialog(this);
+
+        //this makes the menu item appear on the collapsible toolbar
+        setSupportActionBar(toolbar);
 
     }
 
@@ -624,5 +631,41 @@ public class GroupInfoActivity extends AppCompatActivity {
                 Toast.makeText(GroupInfoActivity.this, "Failed, Try again", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.members_menu, menu);
+        addMembers = menu.findItem(R.id.add_members);
+
+        addMembers.setVisible(true);
+//        if (currentUserID.equals(groupAdmin))
+//        {
+//            addMembers.setVisible(true);
+//        }
+//        else
+//        {
+//            addMembers.setVisible(false);
+//        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.add_members)
+        {
+            Intent intent = new Intent(GroupInfoActivity.this, AddGroupMembers.class);
+            intent.putExtra("groupID", groupId);
+            intent.putExtra("groupName", name);
+            intent.putExtra("adminID", groupAdmin);
+            startActivity(intent);
+        }
+
+        return true;
     }
 }
