@@ -201,6 +201,7 @@ public class AddGroupMembers extends AppCompatActivity {
                                                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                                                         String getID = dataSnapshot.child("0").getValue().toString();
                                                         Log.d("catch", "this execed");
+
                                                         if (intentGroupID.equals(getID)){
                                                             //if the user is already in the group do not create another node the user groups other wise it'll duplicate
                                                             //so do nothing
@@ -217,7 +218,8 @@ public class AddGroupMembers extends AppCompatActivity {
                                                             //else if the user is now being added, create node in user groups
                                                             UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
                                                             Log.d("TAG" , "elseie");
-//                                                            Log.d("TAG" , "elseie idd " + idd);
+
+
                                                         }
                                                     }
 
@@ -242,7 +244,7 @@ public class AddGroupMembers extends AppCompatActivity {
                                                     }
                                                 });
 
-                                            }else {
+                                            }else if (!dataSnapshot.child("userGroups").exists()){
                                                 UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
                                             }
                                         }
@@ -258,9 +260,7 @@ public class AddGroupMembers extends AppCompatActivity {
                                     Log.d("AddGroupMembers : " , members.get(j).getName());
 
                                     //getting user id of selected users
-                                    String usersId = members.get(j).getUid();
-
-
+                                    String eyeDee = members.get(j).getUid();
 
                                     //pushing the member list to database
                                     memberRef.setValue(members).addOnSuccessListener(new OnSuccessListener<Void>() {
