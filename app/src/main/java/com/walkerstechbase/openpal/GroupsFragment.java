@@ -506,4 +506,118 @@ public class GroupsFragment extends Fragment
 //            }
 //        });
     }
+
+    private void checkGroupMem(){
+        //getting the id from the group
+        groupRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String id = dataSnapshot.child("groupId").getValue().toString();
+                //using the retrieved id as a child to get the members
+                groupRef.child(id).child(Constansts.MEMBERS_REF).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        String memberId = dataSnapshot.child("uid").getValue().toString();
+                        if (memberId.equals(currentUserID)){
+                            Log.d("belong", " you belong to  " + id);
+                        }else if (!memberId.equals(currentUserID)){
+                            Log.d("does not belong", " you do not belong to  " + id);
+                            userRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    //checking if userGroups node is present
+                                    if (dataSnapshot.hasChild("userGroups")){
+                                        userRef.child(currentUserID).child("userGroups").addChildEventListener(new ChildEventListener() {
+                                            @Override
+                                            public void onChildAdded(@NonNull DataSnapshot dataSnapshot1, @Nullable String s) {
+                                                if (dataSnapshot1.child("0").getValue().equals(id) &&  !memberId.equals(currentUserID)){
+                                                    Log.d("evicted", id + "was evicted");
+//                                                    //remove
+//                                                    userRef.child(currentUserID).child("userGroups").removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                        @Override
+//                                                        public void onSuccess(Void aVoid) {
+//                                                            Log.d("evicted", id + "was evicted");
+//                                                        }
+//                                                    });
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                            }
+
+                                            @Override
+                                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                                            }
+
+                                            @Override
+                                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }else {
+                                        //do nothing
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }
