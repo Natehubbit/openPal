@@ -183,6 +183,8 @@ public class AddGroupMembers extends AppCompatActivity {
                                 //Adding group id to user node to tell the groups the user belongs to
                                 //this is outside of the for loop to prevent the group id from posting multiple times
                                 userGroupList.add(intentGroupID);
+                                Log.d("group list", " list are " + userGroupList);
+                                //Add group to admin only
 
 //                                String idd = model.getUid();
 //                                userGroupList2.add(idd);
@@ -190,70 +192,81 @@ public class AddGroupMembers extends AppCompatActivity {
                                     //checking if user was already a member of the group so it does not create the group twice in the database when we push to the child
 
                                     String eyeDee =userGroupList2.get(k).toString();
-                                    Log.d("eyeDee", eyeDee);
+                                    Log.d("adminGroups", eyeDee);
 
-                                    UsersRef.child(eyeDee).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.hasChild("userGroups")){
-                                                UsersRef.child(eyeDee).child("userGroups").addChildEventListener(new ChildEventListener() {
-                                                    @Override
-                                                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                                        String getID = dataSnapshot.child("0").getValue().toString();
-                                                        Log.d("catch", "this execed");
 
-                                                        if (intentGroupID.equals(getID)){
-                                                            //if the user is already in the group do not create another node the user groups other wise it'll duplicate
-                                                            //so do nothing
-                                                            Log.d("TAG" , "ifisie");
-                                                            Log.d("TAG" , "ifisie idd " + eyeDee);
+//                                    UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
 
-                                                            //remove user id from array list
-                                                            userGroupList2.remove(eyeDee);
+//                                    else{
+                                        int finalK = k;
+                                        UsersRef.child(eyeDee).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.hasChild("userGroups")){
+                                                    UsersRef.child(eyeDee).child("userGroups").addChildEventListener(new ChildEventListener() {
+                                                        @Override
+                                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                            String getID = dataSnapshot.child("0").getValue().toString();
+                                                            Log.d("child","Added");
+                                                            Log.d(intentGroupID,getID);
 
-//                                                            //remove id from user to create new one
-//                                                            String gendId = dataSnapshot.getKey();
-//                                                            UsersRef.child(eyeDee).child("userGroups").child(gendId).child(getID).removeValue();
-                                                        } else if (userGroupList2.contains(eyeDee)){
-                                                            //else if the user is now being added, create node in user groups
-                                                            UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
-                                                            Log.d("TAG" , "elseie");
+                                                            //ids required will be for on group about to created and selected group
+                                                            Log.d("intentGroupId",intentGroupID);
+                                                            if(intentGroupID.equals(getID)){
+                                                                for (int i=0; i<userGroupList2.size(); i++) {
+                                                                    if(userGroupList2.get(i) == eyeDee){
+                                                                        userGroupList2.remove(i);
+                                                                    }
+                                                                    Log.d("userList",userGroupList2.toString());
+                                                                }
+                                                                Log.d("id","GroupID equal");
+                                                            }else if(userGroupList2.contains(eyeDee)){
+                                                                UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
+                                                                Log.d("GroupAdded to",eyeDee);
+                                                                userGroupList2.clear();
+                                                                userGroupList.clear();
+                                                            }else{
+                                                                Log.d("Nothing","added");
+                                                            }
+                                                        }
 
+                                                        @Override
+                                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                                                         }
-                                                    }
 
-                                                    @Override
-                                                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                        @Override
+                                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                                                    }
+                                                        }
 
-                                                    @Override
-                                                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                                                        @Override
+                                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                                                    }
+                                                        }
 
-                                                    @Override
-                                                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                    }
+                                                        }
+                                                    });
 
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                    }
-                                                });
-
-                                            }else if (!dataSnapshot.child("userGroups").exists()){
-                                                UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
+                                                }else{
+                                                    Log.d("initialData","Added");
+                                                    UsersRef.child(eyeDee).child("userGroups").push().setValue(userGroupList);
+                                                    userGroupList2.clear();
+                                                    userGroupList.clear();
+                                                }
                                             }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        }
-                                    });
+                                            }
+                                        });
+//                                    }
+
+
                                 }
                                 //looping through array list and pushing to database
                                 for (int j = 0; j < members.size(); j++){
